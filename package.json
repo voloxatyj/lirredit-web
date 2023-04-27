@@ -8,11 +8,13 @@
     "lint": "eslint '*/**/*.{js,ts,tsx}' --ignore-pattern node_modules/ --ignore-pattern .next/ --quiet --fix"
   },
   "dependencies": {
+    "@chakra-ui/core": "^0.8.0",
     "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^2.2.1",
     "@chakra-ui/theme-tools": "^2.0.2",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.9.0",
+    "formik": "^2.2.9",
     "framer-motion": "^6.3.0",
     "next": "latest",
     "react": "^18.2.0",
