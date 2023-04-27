@@ -4,8 +4,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "format:check": "prettier --check .",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --ignore-pattern node_modules/ --quiet --fix"
+    "format": "prettier --write .",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --ignore-pattern node_modules/ --ignore-pattern .next/ --quiet --fix"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.2",
