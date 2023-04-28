@@ -2,14 +2,21 @@ import { Box, Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
+import { useSignUpMutation } from '../graphql/generated/graphql';
+import { toErrorMap } from '../utils/toErrorMap';
 
 const Register: React.FC = () => {
+  const [, register] = useSignUpMutation();
   return (
     <Wrapper variant='small'>
       <Formik
-        initialValues={{ username: '', password: '' }}
-        onSubmit={({ username, password }) => {
-          console.log(username, password);
+        initialValues={{ username: '', password: '', email: '' }}
+        onSubmit={async (values, { setErrors }) => {
+          const response = await register(values);
+
+          if (response.data?.signUp.errors) {
+            setErrors(toErrorMap(response.data?.signUp.errors));
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -30,14 +37,16 @@ const Register: React.FC = () => {
                 type='password'
               />
             </Box>
-            <Button
-              mt={4}
-              type='submit'
-              isLoading={isSubmitting}
-              colorScheme='teal'
-            >
-              register
-            </Button>
+            <Box mt={4} justifyContent={'center'} display={'flex'}>
+              <Button
+                mt={4}
+                type='submit'
+                isLoading={isSubmitting}
+                colorScheme='teal'
+              >
+                register
+              </Button>
+            </Box>
           </Form>
         )}
       </Formik>
