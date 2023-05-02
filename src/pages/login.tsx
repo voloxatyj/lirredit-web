@@ -1,36 +1,45 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Link, Stack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
 import { PageContentLayout } from '../components/Layout/PageContentLayout';
 import { Title } from '../components/Title';
-import { useSignUpMutation } from '../graphql/generated/graphql';
+import { useLogInMutation } from '../graphql/generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 
-const Register: React.FC = () => {
-  const [, register] = useSignUpMutation();
+const VARIANT_COLOR = 'teal';
+
+const LogIn: React.FC = () => {
+  const [, login] = useLogInMutation();
   return (
     <PageContentLayout variant='small'>
       <Formik
-        initialValues={{ username: '', password: '', email: '' }}
+        initialValues={{ usernameOrEmail: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await register(values);
+          const response = await login(values);
 
-          if (response.data?.signUp.errors) {
-            setErrors(toErrorMap(response.data?.signUp.errors));
+          if (response.data?.login?.errors) {
+            setErrors(toErrorMap(response.data.login.errors));
           }
         }}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Title title='Register' />
+            <Title title='Log In' />
             <InputField
-              name='username'
-              placeholder='username'
-              label='Username'
+              name='usernameOrEmail'
+              placeholder='username or email'
+              label='Username Or Email'
             />
-            <Box mt={4}>
-              <InputField name='email' placeholder='email' label='Email' />
-            </Box>
+            <Stack p={2} isInline justifyContent='space-between' mt={4}>
+              <Box className='checkbox'>
+                <Checkbox>Remember Me</Checkbox>
+              </Box>
+              <Box>
+                <Link color={`${VARIANT_COLOR}.500`}>
+                  Forgot your password?
+                </Link>
+              </Box>
+            </Stack>
             <Box mt={4}>
               <InputField
                 name='password'
@@ -46,7 +55,7 @@ const Register: React.FC = () => {
                 isLoading={isSubmitting}
                 colorScheme='teal'
               >
-                register
+                login
               </Button>
             </Box>
           </Form>
@@ -56,4 +65,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default LogIn;

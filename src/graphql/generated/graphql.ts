@@ -51,10 +51,16 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   create: UserResponse;
+  login?: Maybe<AuthResponse>;
   logout: Scalars['Boolean'];
   removeUser: User;
   signUp: AuthResponse;
   updateUser: User;
+};
+
+
+export type MutationLoginArgs = {
+  credentials: LoginInput;
 };
 
 
@@ -75,13 +81,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   getUser?: Maybe<User>;
-  login?: Maybe<AuthResponse>;
   user: User;
-};
-
-
-export type QueryLoginArgs = {
-  credentials: LoginInput;
 };
 
 
@@ -125,7 +125,15 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'Auth', email: string, username: string, password: string } | null } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'Auth', email: string, username: string } | null } };
+
+export type LogInMutationVariables = Exact<{
+  usernameOrEmail: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'Auth', email: string, username: string } | null } | null };
 
 
 export const SignUpDocument = gql`
@@ -138,7 +146,6 @@ export const SignUpDocument = gql`
     user {
       email
       username
-      password
     }
   }
 }
@@ -146,7 +153,25 @@ export const SignUpDocument = gql`
 
 export function useSignUpMutation() {
   return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
-};
+}
+export const LogInDocument = gql`
+    mutation LogIn($usernameOrEmail: String!, $password: String!) {
+  login(credentials: {usernameOrEmail: $usernameOrEmail, password: $password}) {
+    errors {
+      field
+      message
+    }
+    user {
+      email
+      username
+    }
+  }
+}
+    `;
+
+export function useLogInMutation() {
+  return Urql.useMutation<LogInMutation, LogInMutationVariables>(LogInDocument);
+}
 import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
@@ -337,6 +362,26 @@ export default {
             "args": []
           },
           {
+            "name": "login",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AuthResponse",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "credentials",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "logout",
             "type": {
               "kind": "NON_NULL",
@@ -431,26 +476,6 @@ export default {
               "ofType": null
             },
             "args": []
-          },
-          {
-            "name": "login",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AuthResponse",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "credentials",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
           },
           {
             "name": "user",
