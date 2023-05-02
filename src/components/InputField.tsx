@@ -32,7 +32,11 @@ export const InputField: React.FC<InputFieldProps> = ({
         {label}
       </FormLabel>
       <InputArea {...field} {...props} id={field.name} />
-      {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
+      {error ? (
+        <FormErrorMessage pl={2} fontSize={'md'}>
+          {error}
+        </FormErrorMessage>
+      ) : null}
     </FormControl>
   );
 };

@@ -2,7 +2,7 @@ import { Box, Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
 import { PageContentLayout } from '../components/Layout/PageContentLayout';
-import { Title } from '../components/Title';
+import { Header } from '../components/Heading';
 import { useSignUpMutation } from '../graphql/generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 
@@ -22,7 +22,7 @@ const Register: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Title title='Register' />
+            <Header title='Register' />
             <InputField
               name='username'
               placeholder='username'

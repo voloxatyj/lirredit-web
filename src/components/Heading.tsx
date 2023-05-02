@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
-interface ITitle {
+interface IHeading {
   title: string;
 }
 
-export const Title: React.FC<ITitle> = ({ title }) => (
+export const Header: React.FC<IHeading> = ({ title }) => (
   <Box
     display='flex'
     w='100%'
@@ -15,6 +15,6 @@ export const Title: React.FC<ITitle> = ({ title }) => (
     fontWeight={800}
     mb='8'
   >
-    <h1>{title}</h1>
+    <Heading>{title}</Heading>
   </Box>
 );

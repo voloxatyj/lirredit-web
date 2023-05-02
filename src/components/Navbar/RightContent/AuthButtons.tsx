@@ -1,7 +1,11 @@
 import React from 'react';
+
 import { Button } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 export const AuthButtons: React.FC = () => {
+  const router = useRouter();
+
   return (
     <>
       <Button
@@ -10,7 +14,7 @@ export const AuthButtons: React.FC = () => {
         display={{ base: 'none', sm: 'flex' }}
         width={{ base: '70px', md: '110px' }}
         mr={2}
-        onClick={() => console.log('login')}
+        onClick={() => router.push('/login')}
       >
         Log In
       </Button>
@@ -20,7 +24,7 @@ export const AuthButtons: React.FC = () => {
         display={{ base: 'none', sm: 'flex' }}
         width={{ base: '70px', md: '110px' }}
         mr={2}
-        onClick={() => console.log('signup')}
+        onClick={() => router.push('/register')}
       >
         Sign Up
       </Button>

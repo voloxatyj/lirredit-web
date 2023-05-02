@@ -2,7 +2,7 @@ import { Box, Button, Checkbox, Link, Stack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
 import { PageContentLayout } from '../components/Layout/PageContentLayout';
-import { Title } from '../components/Title';
+import { Header } from '../components/Heading';
 import { useLogInMutation } from '../graphql/generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 
@@ -24,7 +24,7 @@ const LogIn: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Title title='Log In' />
+            <Header title='Log In' />
             <InputField
               name='usernameOrEmail'
               placeholder='username or email'
