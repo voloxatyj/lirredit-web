@@ -1,14 +1,14 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 
-export type WrapperVariant = 'small' | 'regular';
+export type PageContentLayoutVariant = 'small' | 'regular';
 
-interface WrapperProps {
-  variant?: WrapperVariant;
+interface PageContentLayoutProps {
+  variant?: PageContentLayoutVariant;
   children: JSX.Element;
 }
 
-export const Wrapper: React.FC<WrapperProps> = ({
+export const PageContentLayout: React.FC<PageContentLayoutProps> = ({
   children,
   variant = 'regular',
 }) => {
