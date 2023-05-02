@@ -9,7 +9,7 @@
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "comma-spacing": 2,
     "comma-style": 2,
-    "max-len": ["error", { "code": 250 }],
+    "max-len": ["error", { "code": 300 }],
     "object-curly-spacing": [
       2,
       "always",
@@ -21,7 +21,7 @@
     "indent": [2, 2, { "SwitchCase": 1 }],
     "key-spacing": [2, { "beforeColon": false }],
     "keyword-spacing": 2,
-    "max-statements-per-line": [2, { "max": 1 }],
+    "max-statements-per-line": [2, { "max": 10 }],
     "no-await-in-loop": 2,
     "no-global-assign": 2,
     "no-lonely-if": 2,

@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
-
-const fonts = { mono: `'Menlo', monospace` };
+import { Button } from './button';
+import { Input } from './input';
 
 const breakpoints = {
   sm: '40em',
@@ -10,6 +10,10 @@ const breakpoints = {
 };
 
 const theme = extendTheme({
+  components: {
+    Button,
+    Input,
+  },
   semanticTokens: {
     colors: {
       text: {
@@ -32,8 +36,18 @@ const theme = extendTheme({
   colors: {
     black: '#16161D',
   },
-  fonts,
+  fonts: {
+    heading: `'Lilita One', cursive`,
+    body: `'Permanent Marker', cursive;`,
+  },
   breakpoints,
+  styles: {
+    global: () => ({
+      body: {
+        bg: 'gray.400',
+      },
+    }),
+  },
 });
 
 export default theme;
