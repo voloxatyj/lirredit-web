@@ -5,8 +5,8 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
-  Textarea,
 } from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -34,6 +34,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       <InputArea {...field} {...props} id={field.name} />
       {error ? (
         <FormErrorMessage pl={2} fontSize={'md'}>
+          <InfoIcon mr={1} />
           {error}
         </FormErrorMessage>
       ) : null}
