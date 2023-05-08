@@ -15,28 +15,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type Auth = {
-  __typename?: 'Auth';
-  createdAt: Scalars['String'];
-  email: Scalars['String'];
-  id: Scalars['Int'];
-  password: Scalars['String'];
-  updatedAt: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export type AuthResponse = {
-  __typename?: 'AuthResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<Auth>;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
-};
-
 export type FieldErrorUser = {
   __typename?: 'FieldErrorUser';
   field: Scalars['String'];
@@ -51,10 +29,10 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   create: UserResponse;
-  login?: Maybe<AuthResponse>;
+  login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
   removeUser: User;
-  signUp: AuthResponse;
+  signUp: UserResponse;
   updateUser: User;
 };
 
@@ -118,14 +96,7 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type SignUpMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
-}>;
-
-
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'Auth', email: string, username: string } | null } };
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string };
 
 export type LogInMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
@@ -133,27 +104,29 @@ export type LogInMutationVariables = Exact<{
 }>;
 
 
-export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'AuthResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'Auth', email: string, username: string } | null } | null };
+export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldErrorUser', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+
+export type SignUpMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+}>;
 
 
-export const SignUpDocument = gql`
-    mutation SignUp($username: String!, $password: String!, $email: String!) {
-  signUp(credentials: {username: $username, password: $password, email: $email}) {
-    errors {
-      field
-      message
-    }
-    user {
-      email
-      username
-    }
-  }
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldErrorUser', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } };
+
+export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: number, username: string, email: string } | null };
+
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  id
+  username
+  email
 }
     `;
-
-export function useSignUpMutation() {
-  return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
-}
 export const LogInDocument = gql`
     mutation LogIn($usernameOrEmail: String!, $password: String!) {
   login(credentials: {usernameOrEmail: $usernameOrEmail, password: $password}) {
@@ -162,16 +135,43 @@ export const LogInDocument = gql`
       message
     }
     user {
-      email
-      username
+      ...UserFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 export function useLogInMutation() {
   return Urql.useMutation<LogInMutation, LogInMutationVariables>(LogInDocument);
+};
+export const SignUpDocument = gql`
+    mutation SignUp($username: String!, $password: String!, $email: String!) {
+  signUp(credentials: {username: $username, password: $password, email: $email}) {
+    errors {
+      field
+      message
+    }
+    user {
+      ...UserFragment
+    }
+  }
 }
+    ${UserFragmentFragmentDoc}`;
+
+export function useSignUpMutation() {
+  return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
+};
+export const GetUserDocument = gql`
+    query getUser {
+  getUser {
+    ...UserFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+
+export function useGetUserQuery(options?: Omit<Urql.UseQueryArgs<GetUserQueryVariables>, 'query'>) {
+  return Urql.useQuery<GetUserQuery, GetUserQueryVariables>({ query: GetUserDocument, ...options });
+};
 import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
@@ -183,139 +183,6 @@ export default {
     },
     "subscriptionType": null,
     "types": [
-      {
-        "kind": "OBJECT",
-        "name": "Auth",
-        "fields": [
-          {
-            "name": "createdAt",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "email",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "password",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "updatedAt",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "username",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AuthResponse",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "NON_NULL",
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "FieldError",
-                  "ofType": null
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "user",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Auth",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "FieldError",
-        "fields": [
-          {
-            "name": "field",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
       {
         "kind": "OBJECT",
         "name": "FieldErrorUser",
@@ -365,7 +232,7 @@ export default {
             "name": "login",
             "type": {
               "kind": "OBJECT",
-              "name": "AuthResponse",
+              "name": "UserResponse",
               "ofType": null
             },
             "args": [
@@ -421,7 +288,7 @@ export default {
               "kind": "NON_NULL",
               "ofType": {
                 "kind": "OBJECT",
-                "name": "AuthResponse",
+                "name": "UserResponse",
                 "ofType": null
               }
             },

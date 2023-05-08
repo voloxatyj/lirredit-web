@@ -7,23 +7,7 @@ mutation SignUp($username: String!, $password: String!, $email: String!) {
       message
     }
     user {
-      email
-      username
-    }
-  }
-}
-
-mutation LogIn($usernameOrEmail: String!, $password: String!) {
-  login(
-    credentials: { usernameOrEmail: $usernameOrEmail, password: $password }
-  ) {
-    errors {
-      field
-      message
-    }
-    user {
-      email
-      username
+      ...UserFragment
     }
   }
 }
