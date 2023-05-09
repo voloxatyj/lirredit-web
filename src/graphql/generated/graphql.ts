@@ -106,6 +106,11 @@ export type LogInMutationVariables = Exact<{
 
 export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldErrorUser', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
 
+export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogOutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type SignUpMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -143,6 +148,15 @@ export const LogInDocument = gql`
 
 export function useLogInMutation() {
   return Urql.useMutation<LogInMutation, LogInMutationVariables>(LogInDocument);
+};
+export const LogOutDocument = gql`
+    mutation LogOut {
+  logout
+}
+    `;
+
+export function useLogOutMutation() {
+  return Urql.useMutation<LogOutMutation, LogOutMutationVariables>(LogOutDocument);
 };
 export const SignUpDocument = gql`
     mutation SignUp($username: String!, $password: String!, $email: String!) {

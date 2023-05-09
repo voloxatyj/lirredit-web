@@ -9,6 +9,7 @@ import {
   GetUserDocument,
   GetUserQuery,
   LogInMutation,
+  LogOutMutation,
   SignUpMutation,
 } from '../graphql/generated/graphql';
 
@@ -60,6 +61,14 @@ const client = new Client({
                   getUser: result.signUp?.user,
                 };
               },
+            );
+          },
+          logout: (_result, args, cache, info) => {
+            UpdateQuery<LogOutMutation, GetUserQuery>(
+              cache,
+              { query: GetUserDocument },
+              _result,
+              () => ({ getUser: null }),
             );
           },
         },

@@ -1,10 +1,13 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Flex, Icon, MenuDivider, MenuItem } from '@chakra-ui/react';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineLogin } from 'react-icons/md';
+import { useLogOutMutation } from '../../../../graphql/generated/graphql';
 
 export const UserList: React.FC = () => {
-  // const logout = async () => ();
+  const [, logout] = useLogOutMutation();
+  const router = useRouter();
   return (
     <>
       <MenuItem
@@ -22,7 +25,10 @@ export const UserList: React.FC = () => {
         fontSize='10pt'
         fontWeight={700}
         _hover={{ bg: 'blue.500', color: 'white' }}
-        // onClick={logout}
+        onClick={() => {
+          logout({});
+          router.push('/');
+        }}
       >
         <Flex alignItems='center'>
           <Icon fontSize={20} mr={2} as={MdOutlineLogin} />
