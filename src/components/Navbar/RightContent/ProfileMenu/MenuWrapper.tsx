@@ -11,16 +11,21 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { UserList } from './UserList';
 import { NoUserList } from './NoUserList';
+import { UserList } from './UserList';
 
+import { withUrqlClient } from 'next-urql';
 import { GoGistSecret } from 'react-icons/go';
-import { VscAccount } from 'react-icons/vsc';
 import { IoSparkles } from 'react-icons/io5';
+import { VscAccount } from 'react-icons/vsc';
 import { useGetUserQuery } from '../../../../graphql/generated/graphql';
+import { isServer } from '../../../../utils/isServer';
+import { urqlClient } from '../../../../utils/urqlClient';
 
-export const MenuWrapper: React.FC = () => {
-  const [{ data, fetching }] = useGetUserQuery();
+const MenuWrapper: React.FC = () => {
+  const [{ data }] = useGetUserQuery({
+    pause: isServer(),
+  });
   const user = data?.getUser;
   return (
     <Menu>
@@ -60,3 +65,5 @@ export const MenuWrapper: React.FC = () => {
     </Menu>
   );
 };
+
+export default withUrqlClient(urqlClient, { ssr: true })(MenuWrapper);

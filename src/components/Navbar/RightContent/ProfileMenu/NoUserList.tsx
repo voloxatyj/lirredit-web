@@ -1,5 +1,5 @@
+import { Flex, Icon, MenuItem } from '@chakra-ui/react';
 import React from 'react';
-import { MenuItem, Flex, Icon } from '@chakra-ui/react';
 import { MdOutlineLogin } from 'react-icons/md';
 
 export const NoUserList: React.FC = () => (

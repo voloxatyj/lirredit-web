@@ -1,8 +1,10 @@
-import React from 'react';
 import { Flex } from '@chakra-ui/react';
-import { AuthButtons } from './AuthButtons';
+import { withUrqlClient } from 'next-urql';
+import React from 'react';
+import { urqlClient } from '../../../utils/urqlClient';
 import { ActionIcons } from './ActionIcons';
-import { MenuWrapper } from './ProfileMenu/MenuWrapper';
+import { AuthButtons } from './AuthButtons';
+import MenuWrapper from './ProfileMenu/MenuWrapper';
 
 const RightContent: React.FC = () => {
   return (
@@ -10,10 +12,10 @@ const RightContent: React.FC = () => {
       <Flex justifyContent='space-between' alignItems='center'>
         <ActionIcons />
         <AuthButtons />
-        <MenuWrapper />
+        <MenuWrapper pageProps={null} />
       </Flex>
     </>
   );
 };
 
-export default RightContent;
+export default withUrqlClient(urqlClient)(RightContent);

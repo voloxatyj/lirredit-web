@@ -1,10 +1,11 @@
-import React from 'react';
 import { Flex } from '@chakra-ui/react';
+import { withUrqlClient } from 'next-urql';
 import Image from 'next/image';
-import router from 'next/router';
-import { SearchInput } from './SearchInput';
-import RightContent from './RightContent';
+import React from 'react';
 import logo from '../../images/istockphoto.jpg';
+import { urqlClient } from '../../utils/urqlClient';
+import RightContent from './RightContent';
+import { SearchInput } from './SearchInput';
 
 const Navbar: React.FC = () => {
   return (
@@ -23,9 +24,9 @@ const Navbar: React.FC = () => {
         <Image src={logo} alt='logo' width={50} height={50} />
       </Flex>
       <SearchInput />
-      <RightContent />
+      <RightContent pageProps={null} />
     </Flex>
   );
 };
 
-export default Navbar;
+export default withUrqlClient(urqlClient, { ssr: true })(Navbar);
