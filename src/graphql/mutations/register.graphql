@@ -1,7 +1,5 @@
-mutation SignUp($username: String!, $password: String!, $email: String!) {
-  signUp(
-    credentials: { username: $username, password: $password, email: $email }
-  ) {
+mutation SignUp($credentials: SignUpInput!) {
+  signUp(credentials: $credentials) {
     errors {
       field
       message
