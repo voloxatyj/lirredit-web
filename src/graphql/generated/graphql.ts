@@ -15,8 +15,8 @@ export type Scalars = {
   Float: number;
 };
 
-export type FieldErrorUser = {
-  __typename?: 'FieldErrorUser';
+export type FieldError = {
+  __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];
 };
@@ -29,11 +29,17 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   create: UserResponse;
+  forgotPassword: PasswordAuthResponse;
   login?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
   removeUser: User;
   signUp: UserResponse;
   updateUser: User;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -54,6 +60,12 @@ export type MutationSignUpArgs = {
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
+};
+
+export type PasswordAuthResponse = {
+  __typename?: 'PasswordAuthResponse';
+  errors?: Maybe<Array<FieldError>>;
+  success: Scalars['Boolean'];
 };
 
 export type Query = {
@@ -92,19 +104,25 @@ export type User = {
 
 export type UserResponse = {
   __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldErrorUser>>;
+  errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
 
 export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string };
 
-export type LogInMutationVariables = Exact<{
-  usernameOrEmail: Scalars['String'];
-  password: Scalars['String'];
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
 }>;
 
 
-export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldErrorUser', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'PasswordAuthResponse', success: boolean, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
+export type LogInMutationVariables = Exact<{
+  credentials: LoginInput;
+}>;
+
+
+export type LogInMutation = { __typename?: 'Mutation', login?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -112,13 +130,11 @@ export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogOutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type SignUpMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
+  credentials: SignUpInput;
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldErrorUser', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -132,9 +148,24 @@ export const UserFragmentFragmentDoc = gql`
   email
 }
     `;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    errors {
+      field
+      message
+    }
+    success
+  }
+}
+    `;
+
+export function useForgotPasswordMutation() {
+  return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
+};
 export const LogInDocument = gql`
-    mutation LogIn($usernameOrEmail: String!, $password: String!) {
-  login(credentials: {usernameOrEmail: $usernameOrEmail, password: $password}) {
+    mutation LogIn($credentials: LoginInput!) {
+  login(credentials: $credentials) {
     errors {
       field
       message
@@ -159,8 +190,8 @@ export function useLogOutMutation() {
   return Urql.useMutation<LogOutMutation, LogOutMutationVariables>(LogOutDocument);
 };
 export const SignUpDocument = gql`
-    mutation SignUp($username: String!, $password: String!, $email: String!) {
-  signUp(credentials: {username: $username, password: $password, email: $email}) {
+    mutation SignUp($credentials: SignUpInput!) {
+  signUp(credentials: $credentials) {
     errors {
       field
       message
@@ -199,7 +230,7 @@ export default {
     "types": [
       {
         "kind": "OBJECT",
-        "name": "FieldErrorUser",
+        "name": "FieldError",
         "fields": [
           {
             "name": "field",
@@ -241,6 +272,29 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "forgotPassword",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PasswordAuthResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "email",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
           },
           {
             "name": "login",
@@ -341,6 +395,39 @@ export default {
                 }
               }
             ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PasswordAuthResponse",
+        "fields": [
+          {
+            "name": "errors",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "FieldError",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "success",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -469,7 +556,7 @@ export default {
                 "kind": "NON_NULL",
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "FieldErrorUser",
+                  "name": "FieldError",
                   "ofType": null
                 }
               }
