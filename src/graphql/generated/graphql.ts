@@ -15,6 +15,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type ChangePasswordInput = {
+  password: Scalars['String'];
+  token: Scalars['String'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -28,6 +33,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePassword: UserResponse;
   create: UserResponse;
   forgotPassword: PasswordAuthResponse;
   login?: Maybe<UserResponse>;
@@ -35,6 +41,11 @@ export type Mutation = {
   removeUser: User;
   signUp: UserResponse;
   updateUser: User;
+};
+
+
+export type MutationChangePasswordArgs = {
+  credentials: ChangePasswordInput;
 };
 
 
@@ -110,6 +121,13 @@ export type UserResponse = {
 
 export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string };
 
+export type ChangePasswordMutationVariables = Exact<{
+  credentials: ChangePasswordInput;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, email: string, username: string, password: string } | null } };
+
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -148,6 +166,26 @@ export const UserFragmentFragmentDoc = gql`
   email
 }
     `;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($credentials: ChangePasswordInput!) {
+  changePassword(credentials: $credentials) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      username
+      password
+    }
+  }
+}
+    `;
+
+export function useChangePasswordMutation() {
+  return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
@@ -261,6 +299,29 @@ export default {
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "changePassword",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "credentials",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "create",
             "type": {

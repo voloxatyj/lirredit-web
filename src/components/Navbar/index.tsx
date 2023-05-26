@@ -8,25 +8,25 @@ import RightContent from './RightContent';
 import { SearchInput } from './SearchInput';
 
 const Navbar: React.FC = () => {
-  return (
-    <Flex
-      bg='white'
-      height='64px'
-      padding='6px 12px'
-      justifyContent={{ md: 'space-between' }}
-    >
-      <Flex
-        align='center'
-        width={{ base: '40px', md: 'auto' }}
-        mr={{ base: 0, md: 2 }}
-        cursor='pointer'
-      >
-        <Image src={logo} alt='logo' width={50} height={50} />
-      </Flex>
-      <SearchInput />
-      <RightContent pageProps={null} />
-    </Flex>
-  );
+	return (
+		<Flex
+			bg='white'
+			height='64px'
+			padding='6px 12px'
+			justifyContent={{ md: 'space-between' }}
+		>
+			<Flex
+				align='center'
+				width={{ base: '40px', md: 'auto' }}
+				mr={{ base: 0, md: 2 }}
+				cursor='pointer'
+			>
+				<Image src={logo} alt='logo' width={50} height={50} />
+			</Flex>
+			<SearchInput />
+			<RightContent pageProps={null} />
+		</Flex>
+	);
 };
 
 export default withUrqlClient(urqlClient, { ssr: true })(Navbar);
