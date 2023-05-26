@@ -44,11 +44,18 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 		}
 
 		setIsSubmitting(false);
+		setEmail('');
 		onClose();
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose}>
+		<Modal
+			isOpen={isOpen}
+			onClose={() => {
+				setEmail('');
+				onClose();
+			}}
+		>
 			<ModalOverlay />
 			<ModalContent>
 				<Title text={text} styles={{ mb: 0, mt: 5 }} />
