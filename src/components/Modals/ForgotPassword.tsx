@@ -32,7 +32,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-	const handleSubmit = async (): Promise<unknown> => {
+	const handleSubmit = async (): Promise<void> => {
 		setIsSubmitting(true);
 		const response = await forgotPassword({ email });
 

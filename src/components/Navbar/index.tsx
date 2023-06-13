@@ -1,8 +1,8 @@
+import React from 'react';
+import Image from 'next/image';
 import { Flex } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
-import Image from 'next/image';
-import React from 'react';
-import logo from '../../images/istockphoto.jpg';
+import logo from '../../assets/istockphoto.jpg';
 import { urqlClient } from '../../utils/urqlClient';
 import RightContent from './RightContent';
 import { SearchInput } from './SearchInput';
