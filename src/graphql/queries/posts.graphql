@@ -1,0 +1,17 @@
+query Posts($input: GetPostsInput!) {
+	posts(input: $input) {
+		posts {
+			id
+			title
+			createdAt
+			updatedAt
+			text
+			users {
+				username
+				email
+				id
+			}
+		}
+		error
+	}
+}
