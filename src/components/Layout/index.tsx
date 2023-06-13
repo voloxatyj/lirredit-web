@@ -3,17 +3,17 @@ import { Footer } from '../Footer';
 import Navbar from '../Navbar';
 
 interface Props {
-  children: JSX.Element;
+	children: JSX.Element;
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  return (
-    <>
-      <Navbar />
-      {children}
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Navbar pageProps={'none'} />
+			{children}
+			<Footer />
+		</>
+	);
 };
 
 export default Layout;

@@ -1,5 +1,5 @@
 query getUser {
-  getUser {
-    ...UserFragment
-  }
+	getUser {
+		...UserFragment
+	}
 }

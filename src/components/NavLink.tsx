@@ -3,18 +3,18 @@ import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 
 export const NavLink = ({
-  href,
-  children,
+	href,
+	children,
 }: {
-  href: string;
-  children: React.ReactNode;
+	href: string;
+	children: React.ReactNode;
 }) => {
-  const segment = useSelectedLayoutSegment();
-  const active = `/${segment}` === href;
+	const segment = useSelectedLayoutSegment();
+	const active = `/${segment}` === href;
 
-  return (
-    <Link className={active ? 'underline' : ''} href={href}>
-      {children}
-    </Link>
-  );
+	return (
+		<Link className={active ? 'underline' : ''} href={href}>
+			{children}
+		</Link>
+	);
 };

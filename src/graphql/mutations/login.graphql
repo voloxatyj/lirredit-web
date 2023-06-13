@@ -1,11 +1,11 @@
 mutation LogIn($credentials: LoginInput!) {
-  login(credentials: $credentials) {
-    errors {
-      field
-      message
-    }
-    user {
-      ...UserFragment
-    }
-  }
+	login(credentials: $credentials) {
+		errors {
+			field
+			message
+		}
+		user {
+			...UserFragment
+		}
+	}
 }

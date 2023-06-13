@@ -5,13 +5,13 @@ import Layout from '../components/Layout';
 import theme from '../styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ChakraProvider theme={theme}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ChakraProvider>
-  );
+	return (
+		<ChakraProvider theme={theme}>
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+		</ChakraProvider>
+	);
 }
 
 export default MyApp;

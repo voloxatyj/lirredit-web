@@ -7,15 +7,15 @@ import { AuthButtons } from './AuthButtons';
 import MenuWrapper from './ProfileMenu/MenuWrapper';
 
 const RightContent: React.FC = () => {
-  return (
-    <>
-      <Flex justifyContent='space-between' alignItems='center'>
-        <ActionIcons />
-        <AuthButtons />
-        <MenuWrapper pageProps={null} />
-      </Flex>
-    </>
-  );
+	return (
+		<>
+			<Flex justifyContent='space-between' alignItems='center'>
+				<ActionIcons />
+				<AuthButtons />
+				<MenuWrapper pageProps={null} />
+			</Flex>
+		</>
+	);
 };
 
 export default withUrqlClient(urqlClient)(RightContent);

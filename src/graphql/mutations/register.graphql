@@ -1,11 +1,11 @@
 mutation SignUp($credentials: SignUpInput!) {
-  signUp(credentials: $credentials) {
-    errors {
-      field
-      message
-    }
-    user {
-      ...UserFragment
-    }
-  }
+	signUp(credentials: $credentials) {
+		errors {
+			field
+			message
+		}
+		user {
+			...UserFragment
+		}
+	}
 }
