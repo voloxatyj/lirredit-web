@@ -5,6 +5,7 @@ import {
 	FormLabel,
 	Input,
 	FormErrorMessage,
+	Textarea,
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
@@ -22,15 +23,22 @@ export const InputField: React.FC<InputFieldProps> = ({
 	styles,
 	...props
 }) => {
-	const InputArea = Input;
-
 	const [field, { error }] = useField(props);
 	return (
 		<FormControl isInvalid={!!error}>
-			<FormLabel color={'white'} fontSize={'2xl'} pl={2} htmlFor={field.name}>
+			<FormLabel
+				color={textarea ? 'black' : 'white'}
+				fontSize={'2xl'}
+				pl={2}
+				htmlFor={field.name}
+			>
 				{label}
 			</FormLabel>
-			<InputArea {...field} {...props} {...styles} id={field.name} />
+			{textarea ? (
+				<Textarea {...field} {...styles} id={field.name} />
+			) : (
+				<Input {...field} {...props} {...styles} id={field.name} />
+			)}
 			{error ? (
 				<FormErrorMessage pl={2} fontSize={'md'}>
 					<InfoIcon mr={1} />
