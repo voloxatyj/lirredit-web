@@ -44,7 +44,7 @@ const LogIn: React.FC = () => {
 							<Title text='Log In' />
 							<InputField
 								name='usernameOrEmail'
-								placeholder='username or email'
+								placeholder='Enter username or email'
 								label='Username Or Email'
 							/>
 							<Stack p={2} isInline justifyContent='space-between' mt={4}>
@@ -60,7 +60,7 @@ const LogIn: React.FC = () => {
 							<Box mt={4}>
 								<InputField
 									name='password'
-									placeholder='password'
+									placeholder='Enter password'
 									label='Password'
 									type='password'
 								/>
