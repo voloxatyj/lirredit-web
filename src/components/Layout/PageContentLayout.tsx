@@ -1,15 +1,16 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { NavigationSidebar } from '../Sidebar/NavigationSidebar';
+import UsersSidebar from '../Sidebar/UsersSidebar';
 
 export type PageContentLayoutVariant = 'small' | 'regular';
 
-interface PageContentLayoutProps {
+interface IPageContentLayoutProps {
 	variant?: PageContentLayoutVariant;
 	children: JSX.Element;
 }
 
-export const PageContentLayout: React.FC<PageContentLayoutProps> = ({
+export const PageContentLayout: React.FC<IPageContentLayoutProps> = ({
 	children,
 	variant = 'regular',
 }) => {
@@ -19,11 +20,12 @@ export const PageContentLayout: React.FC<PageContentLayoutProps> = ({
 			<Box
 				mt={8}
 				mx='auto'
-				maxW={variant === 'regular' ? '800px' : '400px'}
+				maxW={variant === 'regular' ? '900px' : '400px'}
 				w='100%'
 			>
 				{children}
 			</Box>
+			<UsersSidebar pageProps={null} />
 		</Flex>
 	);
 };
