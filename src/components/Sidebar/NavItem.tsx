@@ -13,25 +13,27 @@ interface INavItem {
 	title: string;
 	navSize: 'sm' | 'lg';
 	icon: IconType;
+	href: string;
 }
 
-export const NavItem: React.FC<INavItem> = ({ navSize, title, icon }) => (
+export const NavItem: React.FC<INavItem> = ({ navSize, title, icon, href }) => (
 	<Flex
 		mt={30}
 		flexDir='column'
 		w='100%'
 		alignItems={navSize === 'sm' ? 'center' : 'flex-start'}
 	>
-		<Divider
-			colorScheme='whiteAlpha'
-			display={navSize === 'sm' ? 'none' : 'flex'}
-		/>
+		<Divider display={navSize === 'sm' ? 'none' : 'flex'} />
 		<Menu placement='right'>
 			<Link
 				p={3}
 				pl={1}
+				href={href}
 				borderRadius={8}
-				_hover={{ textDecor: 'none', backgroundColor: 'blue.500' }}
+				_hover={{
+					textDecor: 'none',
+					backgroundColor: 'blue.500',
+				}}
 				w={navSize === 'lg' ? '100%' : '70%'}
 				cursor='pointer'
 			>
@@ -39,14 +41,14 @@ export const NavItem: React.FC<INavItem> = ({ navSize, title, icon }) => (
 					<Flex display='flex' alignItems='center'>
 						<Icon
 							boxSize={navSize === 'sm' ? 10 : 8}
-							color='whiteAlpha.800'
+							color={navSize === 'sm' ? 'white' : '#1A202C'}
 							as={icon}
 						/>
 						<Text
 							display={navSize === 'sm' ? 'none' : 'flex'}
 							fontSize='3xl'
-							color='white'
-							pt={1}
+							color='#1A202C'
+							pb={1}
 							pl={2}
 						>
 							{title}

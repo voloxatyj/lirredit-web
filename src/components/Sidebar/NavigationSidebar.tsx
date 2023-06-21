@@ -37,7 +37,7 @@ export const NavigationSidebar: React.FC = () => {
 				>
 					<Icon
 						background='none'
-						color='whiteAlpha.800'
+						color={navSize === 'sm' ? 'white' : '#1A202C'}
 						boxSize={8}
 						cursor='pointer'
 						mt='5'
@@ -52,11 +52,32 @@ export const NavigationSidebar: React.FC = () => {
 						}}
 					/>
 				</Box>
-				<NavItem navSize={navSize} title='Dashboard' icon={FiHome} />
-				<NavItem navSize={navSize} title='Friends' icon={FaUserFriends} />
-				<NavItem navSize={navSize} title='Chats' icon={BsChatSquareText} />
-				<NavItem navSize={navSize} title='Posts' icon={BsPostcard} />
 				<NavItem
+					href='/dashboard'
+					navSize={navSize}
+					title='Dashboard'
+					icon={FiHome}
+				/>
+				<NavItem
+					href='/friends'
+					navSize={navSize}
+					title='Friends'
+					icon={FaUserFriends}
+				/>
+				<NavItem
+					href='/chats'
+					navSize={navSize}
+					title='Chats'
+					icon={BsChatSquareText}
+				/>
+				<NavItem
+					href='/posts'
+					navSize={navSize}
+					title='Posts'
+					icon={BsPostcard}
+				/>
+				<NavItem
+					href='/settings'
 					navSize={navSize}
 					title='Settings'
 					icon={MdOutlineSettingsSuggest}
