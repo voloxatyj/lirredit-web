@@ -16,11 +16,14 @@ import { useLogInMutation } from '../graphql/generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { urqlClient } from '../utils/urqlClient';
 import { ForgotPasswordModal } from '../components/Modals/ForgotPassword';
+import { AlertMessage } from '../components/AlertMessage';
+import { useState } from 'react';
 
 const VARIANT_COLOR = 'teal';
 
 const LogIn: React.FC = () => {
 	const router = useRouter();
+	const [alert, setAlert] = useState({ alert: null, message: '' });
 	const [, login] = useLogInMutation();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -33,6 +36,10 @@ const LogIn: React.FC = () => {
 						const response = await login({ credentials: values });
 
 						if (response.data?.login?.errors) {
+							setAlert({
+								...alert,
+								message: response.data?.login?.errors[0]?.message,
+							});
 							return setErrors(toErrorMap(response.data.login.errors));
 						}
 
@@ -75,6 +82,7 @@ const LogIn: React.FC = () => {
 									login
 								</Button>
 							</Box>
+							<AlertMessage {...alert} />
 						</Form>
 					)}
 				</Formik>
