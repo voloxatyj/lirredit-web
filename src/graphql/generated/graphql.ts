@@ -98,6 +98,7 @@ export type Post = {
   id: Scalars['Int'];
   image: Scalars['String'];
   points: Scalars['Float'];
+  short_text: Scalars['String'];
   text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
@@ -125,19 +126,20 @@ export type PostsResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  findOne: UserResponse;
+  findUsers: Array<User>;
   getUser?: Maybe<User>;
   posts: PostsResponse;
-  user: User;
+};
+
+
+export type QueryFindOneArgs = {
+  email: Scalars['String'];
 };
 
 
 export type QueryPostsArgs = {
   input: GetPostsInput;
-};
-
-
-export type QueryUserArgs = {
-  email: Scalars['String'];
 };
 
 export type SignUpInput = {
@@ -155,10 +157,12 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
+  avatarName: Scalars['String'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['Int'];
   image?: Maybe<Scalars['String']>;
+  short_username: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
 };
@@ -169,7 +173,7 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string, image?: string | null };
+export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string };
 
 export type ChangePasswordMutationVariables = Exact<{
   credentials: ChangePasswordInput;
@@ -197,7 +201,7 @@ export type LogInMutationVariables = Exact<{
 }>;
 
 
-export type LogInMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } };
+export type LogInMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string } | null } };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -209,19 +213,24 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string } | null } };
+
+export type FindUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindUsersQuery = { __typename?: 'Query', findUsers: Array<{ __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string }> };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string } | null };
 
 export type PostsQueryVariables = Exact<{
   input: GetPostsInput;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PostsResponse', error?: string | null, posts: Array<{ __typename?: 'Post', id: number, title: string, createdAt: any, updatedAt: any, text: string, users: { __typename?: 'User', username: string, email: string, id: number } }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PostsResponse', error?: string | null, posts: Array<{ __typename?: 'Post', id: number, title: string, createdAt: any, updatedAt: any, text: string, short_text: string, users: { __typename?: 'User', username: string, email: string, id: number } }> } };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
@@ -229,6 +238,8 @@ export const UserFragmentFragmentDoc = gql`
   username
   email
   image
+  avatarName
+  short_username
 }
     `;
 export const ChangePasswordDocument = gql`
@@ -332,6 +343,17 @@ export const SignUpDocument = gql`
 export function useSignUpMutation() {
   return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
 };
+export const FindUsersDocument = gql`
+    query findUsers {
+  findUsers {
+    ...UserFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+
+export function useFindUsersQuery(options?: Omit<Urql.UseQueryArgs<FindUsersQueryVariables>, 'query'>) {
+  return Urql.useQuery<FindUsersQuery, FindUsersQueryVariables>({ query: FindUsersDocument, ...options });
+};
 export const GetUserDocument = gql`
     query getUser {
   getUser {
@@ -352,6 +374,7 @@ export const PostsDocument = gql`
       createdAt
       updatedAt
       text
+      short_text
       users {
         username
         email
@@ -667,6 +690,17 @@ export default {
             "args": []
           },
           {
+            "name": "short_text",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "text",
             "type": {
               "kind": "NON_NULL",
@@ -801,6 +835,47 @@ export default {
         "name": "Query",
         "fields": [
           {
+            "name": "findOne",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "email",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "findUsers",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "User",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
             "name": "getUser",
             "type": {
               "kind": "OBJECT",
@@ -831,29 +906,6 @@ export default {
                 }
               }
             ]
-          },
-          {
-            "name": "user",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              }
-            },
-            "args": [
-              {
-                "name": "email",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
           }
         ],
         "interfaces": []
@@ -862,6 +914,17 @@ export default {
         "kind": "OBJECT",
         "name": "User",
         "fields": [
+          {
+            "name": "avatarName",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
           {
             "name": "createdAt",
             "type": {
@@ -900,6 +963,17 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "short_username",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },

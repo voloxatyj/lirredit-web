@@ -6,6 +6,7 @@ query Posts($input: GetPostsInput!) {
 			createdAt
 			updatedAt
 			text
+			short_text
 			users {
 				username
 				email
