@@ -21,7 +21,7 @@ export const UserHoverBox: React.FC<IUserHoverBox> = ({
 		<Flex pos='absolute' w={0} h={0} />
 		<Flex
 			h={150}
-			w={200}
+			w={220}
 			pt={15}
 			flexDir='column'
 			alignItems='center'

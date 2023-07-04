@@ -56,7 +56,14 @@ const UsersSidebar = () => {
 					/>
 				</Box>
 				{data?.findUsers.map(
-					({ image, username, email, id, avatarName, short_username }) => (
+					({
+						image,
+						username,
+						email,
+						id,
+						avatarName,
+						short_username: shortUserName,
+					}) => (
 						<UserItem
 							key={id}
 							image={image || null}
@@ -64,7 +71,7 @@ const UsersSidebar = () => {
 							navSize={navSize}
 							email={email}
 							avatarName={avatarName}
-							short_username={short_username}
+							shortUserName={shortUserName}
 						/>
 					),
 				)}

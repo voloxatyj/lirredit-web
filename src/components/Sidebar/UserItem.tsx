@@ -18,7 +18,7 @@ interface IUserItem {
 	username: string;
 	email: string;
 	avatarName: string;
-	short_username: string;
+	shortUserName: string;
 }
 
 export const UserItem: React.FC<IUserItem> = ({
@@ -27,7 +27,7 @@ export const UserItem: React.FC<IUserItem> = ({
 	username,
 	email,
 	avatarName,
-	short_username,
+	shortUserName,
 }) => {
 	let avatarBG = null;
 
@@ -75,7 +75,7 @@ export const UserItem: React.FC<IUserItem> = ({
 						)}
 						{navSize === 'lg' && (
 							<Heading as='h1' size='xl' ml='4'>
-								{short_username}
+								{shortUserName}
 							</Heading>
 						)}
 					</Flex>
@@ -86,7 +86,8 @@ export const UserItem: React.FC<IUserItem> = ({
 						w={200}
 						h={200}
 						ml={5}
-						mt={14}
+						mr={5}
+						mt={10}
 					>
 						<UserHoverBox
 							navSize={navSize}
