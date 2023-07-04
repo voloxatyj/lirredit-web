@@ -46,17 +46,30 @@ const Posts = () => {
 	return (
 		<PageContentLayout>
 			<Flex justifyContent='space-around'>
-				<ArrowLeftIcon
-					cursor='pointer'
-					onClick={() => {
-						if (cursor === 0) {
-							return;
-						}
+				<Stack spacing={4}>
+					<Flex
+						justifyContent='space-around'
+						alignItems={'center'}
+						maxH={'25px'}
+					>
+						<ArrowLeftIcon
+							cursor='pointer'
+							onClick={() => {
+								if (cursor === 0) {
+									return;
+								}
 
-						return setCursor(cursor - 1);
-					}}
-				/>
-				<Stack spacing={4} pt={3}>
+								setCursor(cursor - 1);
+							}}
+						/>
+						<Heading fontSize={45} textAlign={'center'}>
+							{'Posts'}
+						</Heading>
+						<ArrowRightIcon
+							cursor='pointer'
+							onClick={() => setCursor(cursor + 1)}
+						/>
+					</Flex>
 					{data?.posts.posts.map((post) => {
 						const { value } = formatDate(post.createdAt).next();
 						return (
@@ -72,7 +85,10 @@ const Posts = () => {
 								>
 									<Box flex={1}>
 										<Heading fontSize='xl'>{post.title}</Heading>
-										<Text>posted by @{post.users.username}</Text>
+										<Flex>
+											<Text>posted by</Text>
+											<Text color={'blue.500'}>@{post.users.username}</Text>
+										</Flex>
 										<Flex align='center'>
 											<Text flex={1} mt={3} fontSize='md'>
 												{`${post.short_text}...`}
@@ -92,10 +108,6 @@ const Posts = () => {
 						);
 					})}
 				</Stack>
-				<ArrowRightIcon
-					cursor='pointer'
-					onClick={() => setCursor(cursor + 1)}
-				/>
 			</Flex>
 		</PageContentLayout>
 	);
