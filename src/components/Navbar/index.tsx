@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Flex } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
-import logo from '../../assets/istockphoto.jpg';
+import favicon from '../../assets/chat.svg';
 import { urqlClient } from '../../utils/urqlClient';
 import RightContent from './RightContent';
 import { SearchInput } from './SearchInput';
@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 				mr={{ base: 0, md: 2 }}
 				cursor='pointer'
 			>
-				<Image src={logo} alt='logo' width={50} height={50} />
+				<Image src={favicon} alt='logo' width={50} height={50} />
 			</Flex>
 			<SearchInput />
 			<RightContent pageProps={null} />
