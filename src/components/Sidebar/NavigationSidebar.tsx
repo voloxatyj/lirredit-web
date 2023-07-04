@@ -24,7 +24,7 @@ export const NavigationSidebar: React.FC = () => {
 			justifyContent='space-between'
 		>
 			<Flex
-				p='5%'
+				p='2%'
 				justifyContent='center'
 				flexDir='column'
 				alignItems='flex-start'
@@ -52,12 +52,7 @@ export const NavigationSidebar: React.FC = () => {
 						}}
 					/>
 				</Box>
-				<NavItem
-					href='/dashboard'
-					navSize={navSize}
-					title='Dashboard'
-					icon={FiHome}
-				/>
+				<NavItem href='/' navSize={navSize} title='Dashboard' icon={FiHome} />
 				<NavItem
 					href='/friends'
 					navSize={navSize}

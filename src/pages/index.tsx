@@ -19,7 +19,7 @@ const Index = () => {
 				onClick={() => router.push('/login')}
 			>
 				<Image src={logo} alt='logo' width={50} height={50} />
-				<Heading fontSize={80}>{'LirrEditChat'}</Heading>
+				<Heading fontSize={80}>{'LiRedditChat'}</Heading>
 			</div>
 		</PageContentLayout>
 	);
