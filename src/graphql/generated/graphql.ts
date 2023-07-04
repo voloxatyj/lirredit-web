@@ -260,7 +260,7 @@ export const ChangePasswordDocument = gql`
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
-};
+}
 export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {
   create(input: $input) {
@@ -284,7 +284,7 @@ export const CreatePostDocument = gql`
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
-};
+}
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
@@ -299,7 +299,7 @@ export const ForgotPasswordDocument = gql`
 
 export function useForgotPasswordMutation() {
   return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
-};
+}
 export const LogInDocument = gql`
     mutation LogIn($credentials: LoginInput!) {
   login(credentials: $credentials) {
@@ -316,7 +316,7 @@ export const LogInDocument = gql`
 
 export function useLogInMutation() {
   return Urql.useMutation<LogInMutation, LogInMutationVariables>(LogInDocument);
-};
+}
 export const LogOutDocument = gql`
     mutation LogOut {
   logout
@@ -325,7 +325,7 @@ export const LogOutDocument = gql`
 
 export function useLogOutMutation() {
   return Urql.useMutation<LogOutMutation, LogOutMutationVariables>(LogOutDocument);
-};
+}
 export const SignUpDocument = gql`
     mutation SignUp($credentials: SignUpInput!) {
   signUp(credentials: $credentials) {
@@ -342,7 +342,7 @@ export const SignUpDocument = gql`
 
 export function useSignUpMutation() {
   return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
-};
+}
 export const FindUsersDocument = gql`
     query findUsers {
   findUsers {
@@ -353,7 +353,7 @@ export const FindUsersDocument = gql`
 
 export function useFindUsersQuery(options?: Omit<Urql.UseQueryArgs<FindUsersQueryVariables>, 'query'>) {
   return Urql.useQuery<FindUsersQuery, FindUsersQueryVariables>({ query: FindUsersDocument, ...options });
-};
+}
 export const GetUserDocument = gql`
     query getUser {
   getUser {
@@ -364,7 +364,7 @@ export const GetUserDocument = gql`
 
 export function useGetUserQuery(options?: Omit<Urql.UseQueryArgs<GetUserQueryVariables>, 'query'>) {
   return Urql.useQuery<GetUserQuery, GetUserQueryVariables>({ query: GetUserDocument, ...options });
-};
+}
 export const PostsDocument = gql`
     query Posts($input: GetPostsInput!) {
   posts(input: $input) {
@@ -388,7 +388,7 @@ export const PostsDocument = gql`
 
 export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'>) {
   return Urql.useQuery<PostsQuery, PostsQueryVariables>({ query: PostsDocument, ...options });
-};
+}
 import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
