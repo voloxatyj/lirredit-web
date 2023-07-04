@@ -2,15 +2,13 @@ import React from 'react';
 import { IconType } from 'react-icons';
 import { Icon, Link, Text } from '@chakra-ui/react';
 
-export const NavLink = ({
-	href,
-	icon,
-	text,
-}: {
+interface INavLink {
 	href: string;
 	icon?: IconType;
 	text?: string;
-}) => {
+}
+
+export const NavLink: React.FC<INavLink> = ({ href, icon, text }) => {
 	return (
 		<Link
 			p={3}

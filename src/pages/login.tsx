@@ -53,6 +53,7 @@ const LogIn: React.FC = () => {
 								name='usernameOrEmail'
 								placeholder='Enter username or email'
 								label='Username Or Email'
+								styles={{ color: 'white' }}
 							/>
 							<Stack p={2} isInline justifyContent='space-between' mt={4}>
 								<Box className='checkbox'>
@@ -70,6 +71,7 @@ const LogIn: React.FC = () => {
 									placeholder='Enter password'
 									label='Password'
 									type='password'
+									styles={{ color: 'white' }}
 								/>
 							</Box>
 							<Box mt={4} justifyContent={'center'} display={'flex'}>

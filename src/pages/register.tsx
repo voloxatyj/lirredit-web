@@ -33,9 +33,15 @@ const Register: React.FC = () => {
 							name='username'
 							placeholder='username'
 							label='Username'
+							styles={{ color: 'white' }}
 						/>
 						<Box mt={4}>
-							<InputField name='email' placeholder='email' label='Email' />
+							<InputField
+								name='email'
+								styles={{ color: 'white' }}
+								placeholder='email'
+								label='Email'
+							/>
 						</Box>
 						<Box mt={4}>
 							<InputField
@@ -43,6 +49,7 @@ const Register: React.FC = () => {
 								placeholder='password'
 								label='Password'
 								type='password'
+								styles={{ color: 'white' }}
 							/>
 						</Box>
 						<Box mt={4} justifyContent={'center'} display={'flex'}>

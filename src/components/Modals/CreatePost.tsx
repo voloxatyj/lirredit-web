@@ -50,14 +50,14 @@ const CreatePost: React.FC<AddPostModalModalProps> = ({
 					>
 						{({ isSubmitting }) => (
 							<Form>
-								<InputField name='title' placeholder='title' label='Title' />
+								<InputField
+									style={{ color: 'black' }}
+									name='title'
+									placeholder='title'
+									label='Title'
+								/>
 								<Box mt={4}>
-									<InputField
-										textarea
-										name='text'
-										placeholder='text...'
-										label='Context'
-									/>
+									<InputField textarea name='text' label='Context' />
 								</Box>
 								<ModalFooter
 									display='flex'
