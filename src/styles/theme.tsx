@@ -1,6 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 import { Button } from './button';
 import { Input } from './input';
+import { Textarea } from './text_area';
 
 const breakpoints = {
 	sm: '40em',
@@ -13,6 +14,7 @@ const theme = extendTheme({
 	components: {
 		Button,
 		Input,
+		Textarea,
 	},
 	semanticTokens: {
 		colors: {
