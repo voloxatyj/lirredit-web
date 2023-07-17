@@ -14,7 +14,6 @@ export const NavigationSidebar: React.FC = () => {
 		<Flex
 			pos='sticky'
 			left='5'
-			h='90vh'
 			marginTop='2.5vh'
 			background='whiteAlpha.600'
 			boxShadow='0 4px 12px 0 rgba(0, 0, 0, 0.05)'
