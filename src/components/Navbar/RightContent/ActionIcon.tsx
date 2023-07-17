@@ -5,14 +5,12 @@ import { IconType } from 'react-icons';
 interface IActionIcon {
 	icon: IconType;
 	fontSize: number;
-	key: number;
 	onClick: (() => void) | undefined;
 }
 
 export const ActionIcon: React.FC<IActionIcon> = ({
 	icon,
 	fontSize,
-	key,
 	onClick,
 }) => (
 	<Flex
