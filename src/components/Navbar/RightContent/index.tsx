@@ -59,12 +59,9 @@ const RightContent: React.FC = () => {
 						mr={3}
 					>
 						{icons.map(({ icon, onClick, fontSize }, idx) => (
-							<ActionIcon
-								key={idx}
-								icon={icon}
-								fontSize={fontSize}
-								onClick={onClick}
-							/>
+							<Box key={idx}>
+								<ActionIcon icon={icon} fontSize={fontSize} onClick={onClick} />
+							</Box>
 						))}
 					</Box>
 				</Flex>

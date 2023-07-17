@@ -1,16 +1,21 @@
-import { Exchange, fetchExchange, stringifyVariables } from 'urql';
-import { FieldInfo, ResolveInfo, Resolver, cacheExchange } from '@urql/exchange-graphcache';
 import {
-	LogInMutation,
-	GetUserQuery,
+	FieldInfo,
+	ResolveInfo,
+	Resolver,
+	cacheExchange,
+} from '@urql/exchange-graphcache';
+import { Exchange, fetchExchange, stringifyVariables } from 'urql';
+import {
 	GetUserDocument,
-	SignUpMutation,
+	GetUserQuery,
+	LogInMutation,
 	LogOutMutation,
+	SignUpMutation,
 } from '../graphql/generated/graphql';
 import { UpdateQuery } from './updateQuery';
 
-import { pipe, tap } from 'wonka';
 import Router from 'next/router';
+import { pipe, tap } from 'wonka';
 import { isServer } from './isServer';
 
 const errorExchange: Exchange =
@@ -76,7 +81,7 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 			headers: cookie
 				? {
 						cookie,
-			}
+					}
 				: undefined,
 		},
 		exchanges: [
