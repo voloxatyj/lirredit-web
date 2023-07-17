@@ -32,7 +32,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 			{textarea ? (
 				<Textarea {...field} {...styles} id={field.name} />
 			) : (
-				<Input {...field} {...props} {...styles} id={field.name} />
+				<Input {...field} {...props} id={field.name} />
 			)}
 			{error ? (
 				<FormErrorMessage pl={2} fontSize={'md'}>
