@@ -1,25 +1,10 @@
 mutation CreatePost($input: PostInput!) {
 	create(input: $input) {
 		post {
-			id
-			createdAt
-			updatedAt
-			title
-			text
-			points
-			users {
-				id
-				email
-				username
-			}
-			images {
-				public_id
-				secure_url
-			}
+			...PostFragment
 		}
 		errors {
-			message
-			field
+			...ErrorFragment
 		}
 	}
 }

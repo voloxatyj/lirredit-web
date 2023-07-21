@@ -1,0 +1,22 @@
+fragment PostFragment on Post {
+	id,
+	title,
+	text,
+	createdAt,
+	short_text,
+	users {
+		username,
+		email,
+		id
+	},
+	images {
+		public_id,
+		secure_url
+	},
+	post_likes {
+		postId,
+		userId
+	},
+	comments_count,
+	likes_count
+}

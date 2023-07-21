@@ -1,0 +1,11 @@
+query Posts($input: GetPostsInput!) {
+	getPosts(input: $input) {
+		isLikes,
+		posts {
+			...PostFragment
+		}
+		errors {
+			...ErrorFragment
+		}
+	}
+}

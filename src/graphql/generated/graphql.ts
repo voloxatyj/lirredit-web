@@ -21,6 +21,15 @@ export type ChangePasswordInput = {
   token: Scalars['String'];
 };
 
+export type Comments = {
+  __typename?: 'Comments';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  postId: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['Int'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -48,6 +57,10 @@ export type ImageInput = {
   secure_url: Scalars['String'];
 };
 
+export type LikePostInput = {
+  post_id: Scalars['Float'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
@@ -58,6 +71,7 @@ export type Mutation = {
   changePassword: UserResponse;
   create: PostResponse;
   forgotPassword: PasswordAuthResponse;
+  like: PostResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   removeUser: User;
@@ -78,6 +92,11 @@ export type MutationCreateArgs = {
 
 export type MutationForgotPasswordArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationLikeArgs = {
+  post_id: LikePostInput;
 };
 
 
@@ -108,23 +127,32 @@ export type PasswordAuthResponse = {
 
 export type Post = {
   __typename?: 'Post';
+  comments: Array<Comments>;
+  comments_count: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   images: Array<Image>;
-  points: Scalars['Float'];
+  likes_count: Scalars['String'];
+  post_likes: Array<PostLikes>;
   short_text: Scalars['String'];
   text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   userId: Scalars['Float'];
   users: User;
-  voteStatus: Scalars['Float'];
 };
 
 export type PostInput = {
   images: Array<ImageInput>;
   text: Scalars['String'];
   title: Scalars['String'];
+};
+
+export type PostLikes = {
+  __typename?: 'PostLikes';
+  createdAt: Scalars['DateTime'];
+  postId: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type PostResponse = {
@@ -136,6 +164,7 @@ export type PostResponse = {
 export type PostsResponse = {
   __typename?: 'PostsResponse';
   errors?: Maybe<Array<FieldError>>;
+  isLikes: Array<Scalars['Boolean']>;
   posts?: Maybe<Array<Post>>;
 };
 
@@ -143,8 +172,8 @@ export type Query = {
   __typename?: 'Query';
   findOne: UserResponse;
   findUsers: Array<User>;
+  getPosts: PostsResponse;
   getUser?: Maybe<User>;
-  posts: PostsResponse;
 };
 
 
@@ -153,7 +182,7 @@ export type QueryFindOneArgs = {
 };
 
 
-export type QueryPostsArgs = {
+export type QueryGetPostsArgs = {
   input: GetPostsInput;
 };
 
@@ -188,6 +217,10 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type ErrorFragmentFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type PostFragmentFragment = { __typename?: 'Post', id: number, title: string, text: string, createdAt: any, short_text: string, comments_count: string, likes_count: string, users: { __typename?: 'User', username: string, email: string, id: number }, images: Array<{ __typename?: 'Image', public_id: string, secure_url: string }>, post_likes: Array<{ __typename?: 'PostLikes', postId: number, userId: number }> };
+
 export type UserFragmentFragment = { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string };
 
 export type ChangePasswordMutationVariables = Exact<{
@@ -202,7 +235,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', create: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: number, createdAt: any, updatedAt: any, title: string, text: string, points: number, users: { __typename?: 'User', id: number, email: string, username: string }, images: Array<{ __typename?: 'Image', public_id: string, secure_url: string }> } | null, errors?: Array<{ __typename?: 'FieldError', message: string, field: string }> | null } };
+export type CreatePostMutation = { __typename?: 'Mutation', create: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: number, title: string, text: string, createdAt: any, short_text: string, comments_count: string, likes_count: string, users: { __typename?: 'User', username: string, email: string, id: number }, images: Array<{ __typename?: 'Image', public_id: string, secure_url: string }>, post_likes: Array<{ __typename?: 'PostLikes', postId: number, userId: number }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -235,18 +268,48 @@ export type FindUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type FindUsersQuery = { __typename?: 'Query', findUsers: Array<{ __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string }> };
 
-export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string } | null };
-
 export type PostsQueryVariables = Exact<{
   input: GetPostsInput;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PostsResponse', posts?: Array<{ __typename?: 'Post', id: number, title: string, createdAt: any, updatedAt: any, text: string, short_text: string, users: { __typename?: 'User', username: string, email: string, id: number }, images: Array<{ __typename?: 'Image', public_id: string, secure_url: string }> }> | null, errors?: Array<{ __typename?: 'FieldError', message: string, field: string }> | null } };
+export type PostsQuery = { __typename?: 'Query', getPosts: { __typename?: 'PostsResponse', isLikes: Array<boolean>, posts?: Array<{ __typename?: 'Post', id: number, title: string, text: string, createdAt: any, short_text: string, comments_count: string, likes_count: string, users: { __typename?: 'User', username: string, email: string, id: number }, images: Array<{ __typename?: 'Image', public_id: string, secure_url: string }>, post_likes: Array<{ __typename?: 'PostLikes', postId: number, userId: number }> }> | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
+export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null, avatarName: string, short_username: string } | null };
+
+export const ErrorFragmentFragmentDoc = gql`
+    fragment ErrorFragment on FieldError {
+  field
+  message
+}
+    `;
+export const PostFragmentFragmentDoc = gql`
+    fragment PostFragment on Post {
+  id
+  title
+  text
+  createdAt
+  short_text
+  users {
+    username
+    email
+    id
+  }
+  images {
+    public_id
+    secure_url
+  }
+  post_likes {
+    postId
+    userId
+  }
+  comments_count
+  likes_count
+}
+    `;
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
@@ -261,8 +324,7 @@ export const ChangePasswordDocument = gql`
     mutation ChangePassword($credentials: ChangePasswordInput!) {
   changePassword(credentials: $credentials) {
     errors {
-      field
-      message
+      ...ErrorFragment
     }
     user {
       id
@@ -271,7 +333,7 @@ export const ChangePasswordDocument = gql`
     }
   }
 }
-    `;
+    ${ErrorFragmentFragmentDoc}`;
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
@@ -280,29 +342,15 @@ export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {
   create(input: $input) {
     post {
-      id
-      createdAt
-      updatedAt
-      title
-      text
-      points
-      users {
-        id
-        email
-        username
-      }
-      images {
-        public_id
-        secure_url
-      }
+      ...PostFragment
     }
     errors {
-      message
-      field
+      ...ErrorFragment
     }
   }
 }
-    `;
+    ${PostFragmentFragmentDoc}
+${ErrorFragmentFragmentDoc}`;
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
@@ -311,13 +359,12 @@ export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
     errors {
-      field
-      message
+      ...ErrorFragment
     }
     success
   }
 }
-    `;
+    ${ErrorFragmentFragmentDoc}`;
 
 export function useForgotPasswordMutation() {
   return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
@@ -326,15 +373,15 @@ export const LogInDocument = gql`
     mutation LogIn($credentials: LoginInput!) {
   login(credentials: $credentials) {
     errors {
-      field
-      message
+      ...ErrorFragment
     }
     user {
       ...UserFragment
     }
   }
 }
-    ${UserFragmentFragmentDoc}`;
+    ${ErrorFragmentFragmentDoc}
+${UserFragmentFragmentDoc}`;
 
 export function useLogInMutation() {
   return Urql.useMutation<LogInMutation, LogInMutationVariables>(LogInDocument);
@@ -352,15 +399,15 @@ export const SignUpDocument = gql`
     mutation SignUp($credentials: SignUpInput!) {
   signUp(credentials: $credentials) {
     errors {
-      field
-      message
+      ...ErrorFragment
     }
     user {
       ...UserFragment
     }
   }
 }
-    ${UserFragmentFragmentDoc}`;
+    ${ErrorFragmentFragmentDoc}
+${UserFragmentFragmentDoc}`;
 
 export function useSignUpMutation() {
   return Urql.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
@@ -376,6 +423,24 @@ export const FindUsersDocument = gql`
 export function useFindUsersQuery(options?: Omit<Urql.UseQueryArgs<FindUsersQueryVariables>, 'query'>) {
   return Urql.useQuery<FindUsersQuery, FindUsersQueryVariables>({ query: FindUsersDocument, ...options });
 };
+export const PostsDocument = gql`
+    query Posts($input: GetPostsInput!) {
+  getPosts(input: $input) {
+    isLikes
+    posts {
+      ...PostFragment
+    }
+    errors {
+      ...ErrorFragment
+    }
+  }
+}
+    ${PostFragmentFragmentDoc}
+${ErrorFragmentFragmentDoc}`;
+
+export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'>) {
+  return Urql.useQuery<PostsQuery, PostsQueryVariables>({ query: PostsDocument, ...options });
+};
 export const GetUserDocument = gql`
     query getUser {
   getUser {
@@ -386,37 +451,6 @@ export const GetUserDocument = gql`
 
 export function useGetUserQuery(options?: Omit<Urql.UseQueryArgs<GetUserQueryVariables>, 'query'>) {
   return Urql.useQuery<GetUserQuery, GetUserQueryVariables>({ query: GetUserDocument, ...options });
-};
-export const PostsDocument = gql`
-    query Posts($input: GetPostsInput!) {
-  posts(input: $input) {
-    posts {
-      id
-      title
-      createdAt
-      updatedAt
-      text
-      short_text
-      users {
-        username
-        email
-        id
-      }
-      images {
-        public_id
-        secure_url
-      }
-    }
-    errors {
-      message
-      field
-    }
-  }
-}
-    `;
-
-export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'>) {
-  return Urql.useQuery<PostsQuery, PostsQueryVariables>({ query: PostsDocument, ...options });
 };
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -429,6 +463,68 @@ export default {
     },
     "subscriptionType": null,
     "types": [
+      {
+        "kind": "OBJECT",
+        "name": "Comments",
+        "fields": [
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "postId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "updatedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
       {
         "kind": "OBJECT",
         "name": "FieldError",
@@ -594,6 +690,29 @@ export default {
             ]
           },
           {
+            "name": "like",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PostResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "post_id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "login",
             "type": {
               "kind": "NON_NULL",
@@ -737,6 +856,35 @@ export default {
         "name": "Post",
         "fields": [
           {
+            "name": "comments",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Comments",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "comments_count",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "createdAt",
             "type": {
               "kind": "NON_NULL",
@@ -777,12 +925,30 @@ export default {
             "args": []
           },
           {
-            "name": "points",
+            "name": "likes_count",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "post_likes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "PostLikes",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": []
@@ -853,9 +1019,38 @@ export default {
               }
             },
             "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PostLikes",
+        "fields": [
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           },
           {
-            "name": "voteStatus",
+            "name": "postId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -913,6 +1108,23 @@ export default {
                   "kind": "OBJECT",
                   "name": "FieldError",
                   "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "isLikes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             },
@@ -982,16 +1194,7 @@ export default {
             "args": []
           },
           {
-            "name": "getUser",
-            "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "posts",
+            "name": "getPosts",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -1012,6 +1215,15 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "getUser",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
           }
         ],
         "interfaces": []

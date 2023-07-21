@@ -1,8 +1,7 @@
 mutation SignUp($credentials: SignUpInput!) {
 	signUp(credentials: $credentials) {
 		errors {
-			field
-			message
+			...ErrorFragment
 		}
 		user {
 			...UserFragment
