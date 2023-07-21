@@ -1,33 +1,35 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
-import NextLink from 'next/link';
+import { default as Link, default as NextLink } from 'next/link';
 import { useState } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { FaRegComment, FaRetweet } from 'react-icons/fa';
+import { Carousel } from '../../components/Global/Carousel';
+import { NotificationIcon } from '../../components/Global/NotificationIcon';
+import { Title } from '../../components/Global/Title';
 import { PageContentLayout } from '../../components/Layout/PageContentLayout';
-import { Title } from '../../components/Title';
 import { usePostsQuery } from '../../graphql/generated/graphql';
 import { formatDate } from '../../utils/formatDate';
 import { urqlClient } from '../../utils/urqlClient';
-import Link from 'next/link';
-import { Carousel } from '../../components/Carousel';
-import { FaRegComment, FaRetweet } from 'react-icons/fa';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { ActionIcon } from '../../components/Navbar/RightContent/ActionIcon';
 
 const icons = [
 	{
 		icon: FaRegComment,
-		fontSize: 20,
+		fontSize: 14,
+		type: 'comment',
 		onClick: () => console.log('comment'),
 	},
 	{
 		icon: FaRetweet,
-		fontSize: 20,
+		fontSize: 14,
+		type: 'retweet',
 		onClick: () => console.log('retweet'),
 	},
 	{
 		icon: AiOutlineHeart,
-		fontSize: 22,
+		fontSize: 14,
+		type: 'likes',
 		onClick: () => console.log('like'),
 	},
 ];
@@ -74,6 +76,7 @@ const Posts = () => {
 						justifyContent='space-around'
 						alignItems={'center'}
 						maxH={'25px'}
+						cursor={'pointer'}
 					>
 						<ArrowLeftIcon
 							cursor='pointer'
@@ -93,16 +96,23 @@ const Posts = () => {
 							onClick={() => setCursor(cursor + 1)}
 						/>
 					</Flex>
-					{data.posts.posts &&
-						data?.posts?.posts.map(
-							({
-								id,
-								title,
-								createdAt,
-								users,
-								short_text: shortText,
-								images,
-							}) => {
+					{data.getPosts.posts &&
+						data?.getPosts.isLikes &&
+						data?.getPosts?.posts.map(
+							(
+								{
+									id,
+									title,
+									createdAt,
+									users,
+									short_text: shortText,
+									images,
+									comments_count: commentsCount,
+									likes_count: likesCount,
+								},
+								idx,
+							) => {
+								const isLike = data?.getPosts.isLikes[idx];
 								const { value } = formatDate(createdAt).next();
 								return (
 									<Flex
@@ -146,14 +156,25 @@ const Posts = () => {
 										</NextLink>
 										{images.length > 0 && <Carousel slides={images} />}
 										<Box className='action_icons'>
-											{icons.map(({ icon, onClick, fontSize }, idx) => (
-												<ActionIcon
-													icon={icon}
-													fontSize={fontSize}
-													onClick={onClick}
-													key={idx}
-												/>
-											))}
+											{icons.map(({ icon, onClick, fontSize, type }, index) => {
+												return (
+													<NotificationIcon
+														icon={
+															isLike && type === 'likes' ? AiFillHeart : icon
+														}
+														fontSize={fontSize}
+														onClick={onClick}
+														count={
+															type === 'comments'
+																? +commentsCount
+																: type === 'likes'
+																? +likesCount
+																: 0
+														}
+														key={index}
+													/>
+												);
+											})}
 										</Box>
 									</Flex>
 								);
