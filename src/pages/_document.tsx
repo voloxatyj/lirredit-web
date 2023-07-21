@@ -1,6 +1,6 @@
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 import { ColorModeScript } from '@chakra-ui/react';
-import { Footer } from '../components/Footer';
+import { Footer } from '../components/Footer/Footer';
 
 export default class Document extends NextDocument {
 	render() {

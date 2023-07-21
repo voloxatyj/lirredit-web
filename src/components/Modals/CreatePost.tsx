@@ -12,15 +12,14 @@ import {
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import { withUrqlClient } from 'next-urql';
-import { useRouter } from 'next/router';
 import React, { useCallback, useMemo, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useCreatePostMutation } from '../../graphql/generated/graphql';
-import { urqlClient } from '../../utils/urqlClient';
-import { InputField } from '../InputField';
-import { Title } from '../Title';
-import { Spinner } from '../Spinner';
 import { toErrorMap } from '../../utils/toErrorMap';
+import { urqlClient } from '../../utils/urqlClient';
+import { InputField } from '../Global/InputField';
+import { Spinner } from '../Global/Spinner';
+import { Title } from '../Global/Title';
 
 interface IAddPostModalModalProps {
 	text: string;

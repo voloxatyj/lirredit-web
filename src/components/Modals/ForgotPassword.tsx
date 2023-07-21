@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForgotPasswordMutation } from '../../graphql/generated/graphql';
-import { Title } from '../Title';
+import { Title } from '../Global/Title';
 
 interface ForgotPasswordModalProps {
 	text: string;
