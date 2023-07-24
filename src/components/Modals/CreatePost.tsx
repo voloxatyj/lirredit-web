@@ -166,7 +166,7 @@ const CreatePost: React.FC<IAddPostModalModalProps> = ({
 														src={`${URL.createObjectURL(image)}`}
 														key={idx}
 														alt={`${idx}`}
-														onClick={(e) => handleRemove(e)}
+														onClick={(e: any) => handleRemove(e)}
 													/>
 												))}
 											{<Spinner uploadStatus={uploadStatus} />}

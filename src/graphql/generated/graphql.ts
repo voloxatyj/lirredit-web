@@ -58,7 +58,15 @@ export type ImageInput = {
 };
 
 export type LikePostInput = {
-  post_id: Scalars['Float'];
+  isLike: Scalars['Boolean'];
+  postId: Scalars['Float'];
+};
+
+export type LikeResponse = {
+  __typename?: 'LikeResponse';
+  errors?: Maybe<Array<FieldError>>;
+  message: Scalars['String'];
+  success: Scalars['Boolean'];
 };
 
 export type LoginInput = {
@@ -71,7 +79,7 @@ export type Mutation = {
   changePassword: UserResponse;
   create: PostResponse;
   forgotPassword: PasswordAuthResponse;
-  like: PostResponse;
+  like: LikeResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   removeUser: User;
@@ -96,7 +104,7 @@ export type MutationForgotPasswordArgs = {
 
 
 export type MutationLikeArgs = {
-  post_id: LikePostInput;
+  input: LikePostInput;
 };
 
 
@@ -244,6 +252,13 @@ export type ForgotPasswordMutationVariables = Exact<{
 
 export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'PasswordAuthResponse', success: boolean, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
+export type LikePostMutationVariables = Exact<{
+  input: LikePostInput;
+}>;
+
+
+export type LikePostMutation = { __typename?: 'Mutation', like: { __typename?: 'LikeResponse', success: boolean, message: string, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
 export type LogInMutationVariables = Exact<{
   credentials: LoginInput;
 }>;
@@ -368,6 +383,22 @@ export const ForgotPasswordDocument = gql`
 
 export function useForgotPasswordMutation() {
   return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
+};
+export const LikePostDocument = gql`
+    mutation likePost($input: LikePostInput!) {
+  like(input: $input) {
+    success
+    message
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+export function useLikePostMutation() {
+  return Urql.useMutation<LikePostMutation, LikePostMutationVariables>(LikePostDocument);
 };
 export const LogInDocument = gql`
     mutation LogIn($credentials: LoginInput!) {
@@ -618,6 +649,50 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "LikeResponse",
+        "fields": [
+          {
+            "name": "errors",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "FieldError",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "message",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "success",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
           {
@@ -695,13 +770,13 @@ export default {
               "kind": "NON_NULL",
               "ofType": {
                 "kind": "OBJECT",
-                "name": "PostResponse",
+                "name": "LikeResponse",
                 "ofType": null
               }
             },
             "args": [
               {
-                "name": "post_id",
+                "name": "input",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {

@@ -1,40 +1,30 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Heading,
+	Icon,
+	Spinner,
+	Stack,
+	Text,
+} from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
 import { default as Link, default as NextLink } from 'next/link';
 import { useState } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { FaRegComment, FaRetweet } from 'react-icons/fa';
 import { Carousel } from '../../components/Global/Carousel';
-import { NotificationIcon } from '../../components/Global/NotificationIcon';
 import { Title } from '../../components/Global/Title';
 import { PageContentLayout } from '../../components/Layout/PageContentLayout';
-import { usePostsQuery } from '../../graphql/generated/graphql';
+import {
+	usePostsQuery,
+	useLikePostMutation,
+} from '../../graphql/generated/graphql';
 import { formatDate } from '../../utils/formatDate';
 import { urqlClient } from '../../utils/urqlClient';
 
-const icons = [
-	{
-		icon: FaRegComment,
-		fontSize: 14,
-		type: 'comment',
-		onClick: () => console.log('comment'),
-	},
-	{
-		icon: FaRetweet,
-		fontSize: 14,
-		type: 'retweet',
-		onClick: () => console.log('retweet'),
-	},
-	{
-		icon: AiOutlineHeart,
-		fontSize: 14,
-		type: 'likes',
-		onClick: () => console.log('like'),
-	},
-];
-
 const Posts = () => {
+	const [, like] = useLikePostMutation();
 	const [cursor, setCursor] = useState<number>(0);
 	const [{ data, error }] = usePostsQuery({
 		variables: {
@@ -156,25 +146,65 @@ const Posts = () => {
 										</NextLink>
 										{images.length > 0 && <Carousel slides={images} />}
 										<Box className='action_icons'>
-											{icons.map(({ icon, onClick, fontSize, type }, index) => {
-												return (
-													<NotificationIcon
-														icon={
-															isLike && type === 'likes' ? AiFillHeart : icon
-														}
-														fontSize={fontSize}
-														onClick={onClick}
-														count={
-															type === 'comments'
-																? +commentsCount
-																: type === 'likes'
-																? +likesCount
-																: 0
-														}
-														key={index}
-													/>
-												);
-											})}
+											<Flex
+												p={3}
+												pl={1}
+												alignItems={'center'}
+												justifyContent={'space-evenly'}
+												borderRadius={8}
+												m={'0 10px'}
+												w={'10%'}
+												cursor='pointer'
+											>
+												<Icon
+													color={'#3182ce'}
+													as={FaRegComment}
+													onClick={() => console.log('comment')}
+												/>
+												<Text color={'blue.500'} fontSize={14}>
+													{commentsCount}
+												</Text>
+											</Flex>
+											<Flex
+												p={3}
+												pl={1}
+												alignItems={'center'}
+												justifyContent={'space-evenly'}
+												borderRadius={8}
+												m={'0 10px'}
+												w={'10%'}
+												cursor='pointer'
+											>
+												<Icon
+													color={'#3182ce'}
+													as={FaRetweet}
+													onClick={() => console.log('retweet')}
+												/>
+												<Text color={'blue.500'} fontSize={14}>
+													{0}
+												</Text>
+											</Flex>
+											<Flex
+												p={3}
+												pl={1}
+												alignItems={'center'}
+												justifyContent={'space-evenly'}
+												borderRadius={8}
+												m={'0 10px'}
+												w={'10%'}
+												cursor='pointer'
+											>
+												<Icon
+													color={'#3182ce'}
+													as={isLike ? AiFillHeart : AiOutlineHeart}
+													onClick={() =>
+														like({ input: { postId: id, isLike } })
+													}
+												/>
+												<Text color={'blue.500'} fontSize={14}>
+													{likesCount}
+												</Text>
+											</Flex>
 										</Box>
 									</Flex>
 								);

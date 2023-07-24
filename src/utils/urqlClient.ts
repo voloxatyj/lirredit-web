@@ -10,7 +10,7 @@ import {
 	GetUserQuery,
 	LogInMutation,
 	LogOutMutation,
-	SignUpMutation,
+	SignUpMutation
 } from '../graphql/generated/graphql';
 import { UpdateQuery } from './updateQuery';
 
@@ -67,6 +67,14 @@ const cursorPagination = (): Resolver => {
 	};
 };
 
+function invalidateAllPosts(cache: any) {
+	const allFields: FieldInfo[] = cache.inspectFields('Query');
+	const fieldInfos = allFields.filter((info) => info.fieldName === 'getPosts');
+	fieldInfos.forEach((fi) => {
+		cache.invalidate('Query', 'getPosts', fi.arguments || {});
+	});
+}
+
 export const urqlClient = (ssrExchange: any, ctx: any) => {
 	let cookie = '';
 
@@ -81,7 +89,7 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 			headers: cookie
 				? {
 						cookie,
-					}
+				}
 				: undefined,
 		},
 		exchanges: [
@@ -96,6 +104,12 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 				},
 				updates: {
 					Mutation: {
+						create: (_result, args, cache, info) => {
+							invalidateAllPosts(cache);
+						},
+						like: (_result, args, cache, info) => {
+							invalidateAllPosts(cache);
+						},
 						login: (_result, args, cache, info) => {
 							UpdateQuery<LogInMutation, GetUserQuery>(
 								cache,
