@@ -1,0 +1,11 @@
+query Post($id: Float!) {
+	getPost(id: $id) {
+		post {
+			...PostFragment
+		}
+		isLike
+		errors {
+			...ErrorFragment
+		}
+	}
+}
