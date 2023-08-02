@@ -52,3 +52,31 @@ const getDiffInDay = function* (diff: number): Generator<string> {
 	word = hours > 1 ? 'hours' : 'hour';
 	yield `${hours} ${word} ago`;
 };
+
+export const parseDatePost = function*(
+	time: string,
+): Generator<string> {
+	const months = ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Feb', 'Apr', 'Jun', 'Aug', 'Oct', 'Dec'];
+	const date = new Date(time);
+	const yyyy = date.getFullYear();
+	const mm = months[date.getUTCMonth()];
+	let dd = date.getDate();
+	dd = dd < 10 ? +`0${dd}` : dd;
+	let hours: string | number = date.getUTCHours();
+	let minutes = date.getUTCMinutes();
+	minutes = minutes < 10 ? +`0${minutes}` : minutes;
+	let ampm = 'AM';
+
+	if (hours === 12) {
+		ampm = 'PM';
+	} else if (hours === 0) {
+		hours = 12;
+	} else if (hours > 12) {
+		hours -= 12;
+		ampm = 'PM';
+	}
+
+	hours = hours < 10 ? `0${hours}` : hours;
+
+	yield `${hours}:${minutes} ${ampm} · ${mm} ${dd}, ${yyyy} ·`;
+};
