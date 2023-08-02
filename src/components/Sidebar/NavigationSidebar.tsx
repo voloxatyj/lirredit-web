@@ -5,10 +5,23 @@ import { FaUserFriends } from 'react-icons/fa';
 import { FiHome, FiMenu } from 'react-icons/fi';
 import { MdOutlineSettingsSuggest } from 'react-icons/md';
 import { NavItem } from './NavItem';
-import UserItem from './AvatarItem';
+import { AvatarItem } from './AvatarItem';
+import { User, useGetUserQuery } from '../../graphql/generated/graphql';
+import { isServer } from '../../utils/isServer';
+import { withUrqlClient } from 'next-urql';
+import { urqlClient } from '../../utils/urqlClient';
 
-export const NavigationSidebar: React.FC = () => {
-	const [navSize, setNavSize] = useState<'sm' | 'lg'>('lg');
+interface INavigationSidebarProps {
+	size?: 'sm' | 'lg';
+}
+
+const NavigationSidebar: React.FC<INavigationSidebarProps> = ({ size }) => {
+	const [navSize, setNavSize] = useState<'sm' | 'lg'>(size || 'lg');
+	const [{ data }] = useGetUserQuery({
+		pause: isServer(),
+	});
+
+	const user = data?.getUser as User;
 
 	return (
 		<Flex
@@ -86,8 +99,17 @@ export const NavigationSidebar: React.FC = () => {
 				mb='4'
 			>
 				<Divider display={navSize === 'sm' ? 'none' : 'flex'} />
-				<UserItem pageProps={null} navSize={navSize} />
+				<AvatarItem
+					navSize={navSize}
+					image={user?.image || null}
+					username={user?.username}
+					email={user?.email}
+					avatarName={user?.avatarName}
+					shortUserName={user?.short_username}
+				/>
 			</Flex>
 		</Flex>
 	);
 };
+
+export default withUrqlClient(urqlClient)(NavigationSidebar);

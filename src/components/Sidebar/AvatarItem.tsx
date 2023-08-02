@@ -1,55 +1,101 @@
-import { Avatar, AvatarBadge, Flex, Heading } from '@chakra-ui/react';
-import { withUrqlClient } from 'next-urql';
-import { useGetUserQuery } from '../../graphql/generated/graphql';
-import { isServer } from '../../utils/isServer';
+import {
+	Avatar,
+	Divider,
+	Flex,
+	Heading,
+	Menu,
+	MenuButton,
+	MenuList,
+} from '@chakra-ui/react';
+import React from 'react';
 import { randomRgbColor } from '../../utils/rndRGBColor';
-import { urqlClient } from '../../utils/urqlClient';
+import { UserHoverBox } from './UserHoverBox';
 
 interface IAvatarItem {
-	navSize: string;
+	image: string | null;
+	navSize: 'sm' | 'lg';
+	username: string;
+	email: string;
+	avatarName: string;
+	shortUserName: string;
 }
 
-const AvatarItem: React.FC<IAvatarItem> = ({
+export const AvatarItem: React.FC<IAvatarItem> = ({
 	navSize,
-}: {
-	navSize: string;
+	image,
+	username,
+	email,
+	avatarName,
+	shortUserName,
 }) => {
-	const [{ data }] = useGetUserQuery({
-		pause: isServer(),
-	});
-	const user = data?.getUser;
-	const avatarName = user?.avatarName;
-	const short_username = user?.short_username;
-
 	let avatarBG = null;
 
-	if (!user?.image) {
+	if (!image) {
 		avatarBG = randomRgbColor().next();
 	}
 
 	return (
-		<Flex mt='4' align='center' cursor={'pointer'}>
-			{user?.image ? (
-				<Avatar size='md' src={user.image}>
-					<AvatarBadge boxSize='1.25em' bg='green.500' />
-				</Avatar>
-			) : (
-				<Avatar
-					size='md'
-					bg={avatarBG?.value}
-					name={avatarName || ''}
-					showBorder
+		<Flex
+			mt={30}
+			flexDir='column'
+			w='100%'
+			alignItems={navSize === 'sm' ? 'center' : 'flex-start'}
+		>
+			<Divider display={navSize === 'sm' ? 'none' : 'flex'} />
+			<Menu placement='left'>
+				<MenuButton
+					w={navSize === 'lg' ? '100%' : '70%'}
+					borderRadius={8}
+					_hover={{ textDecor: 'none', backgroundColor: 'blue.500' }}
 				>
-					<AvatarBadge boxSize='1.25em' bg='green.500' />
-				</Avatar>
-			)}
-			{navSize === 'lg' && (
-				<Heading as='h1' size='xl' ml='4'>
-					{short_username}
-				</Heading>
-			)}
+					<Flex
+						mt='2'
+						mb='2'
+						align='center'
+						p={3}
+						pl={0}
+						borderRadius={8}
+						w={navSize === 'lg' ? '100%' : '70%'}
+						cursor='pointer'
+					>
+						{image ? (
+							<Avatar size='md' src={image} />
+						) : (
+							<Avatar
+								size='md'
+								bg={avatarBG?.value}
+								name={avatarName || ''}
+								showBorder
+							/>
+						)}
+						{navSize === 'lg' && (
+							<Heading as='h1' size='xl' ml='4'>
+								{shortUserName}
+							</Heading>
+						)}
+					</Flex>
+					<MenuList
+						py={0}
+						background='none'
+						border='none'
+						w={200}
+						h={200}
+						ml={5}
+						mr={5}
+						mt={10}
+					>
+						<UserHoverBox
+							navSize={navSize}
+							background={avatarBG?.value}
+							username={username}
+							avatarName={avatarName}
+							image={image}
+							email={email}
+						/>
+					</MenuList>
+				</MenuButton>
+			</Menu>
+			<Divider display={navSize === 'sm' ? 'none' : 'flex'} />
 		</Flex>
 	);
 };
-
-export default withUrqlClient(urqlClient)(AvatarItem);

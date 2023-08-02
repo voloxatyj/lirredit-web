@@ -5,7 +5,7 @@ import { isServer } from '../../utils/isServer';
 import { useFindUsersQuery } from '../../graphql/generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { urqlClient } from '../../utils/urqlClient';
-import { UserItem } from './UserItem';
+import { AvatarItem } from './AvatarItem';
 
 const UsersSidebar = () => {
 	const [{ data }] = useFindUsersQuery({
@@ -63,7 +63,7 @@ const UsersSidebar = () => {
 						avatarName,
 						short_username: shortUserName,
 					}) => (
-						<UserItem
+						<AvatarItem
 							key={id}
 							image={image || null}
 							username={username}
