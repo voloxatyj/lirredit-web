@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { NavigationSidebar } from '../Sidebar/NavigationSidebar';
+import NavigationSidebar from '../Sidebar/NavigationSidebar';
 import UsersSidebar from '../Sidebar/UsersSidebar';
 
 export type PageContentLayoutVariant = 'small' | 'regular';
@@ -16,7 +16,7 @@ export const PageContentLayout: React.FC<IPageContentLayoutProps> = ({
 }) => {
 	return (
 		<Flex>
-			<NavigationSidebar />
+			<NavigationSidebar pageProps={null} />
 			<Box
 				mt={8}
 				mx='auto'
