@@ -1,0 +1,10 @@
+mutation viewPost($input: ViewPostInput!) {
+	view(input: $input) {
+		success
+		message
+		errors {
+			field
+			message
+		}
+	}
+}

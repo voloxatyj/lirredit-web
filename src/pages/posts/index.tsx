@@ -13,18 +13,21 @@ import { default as Link, default as NextLink } from 'next/link';
 import { useState } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { FaRegComment, FaRetweet } from 'react-icons/fa';
+import { BsBarChartFill } from 'react-icons/bs';
 import { Carousel } from '../../components/Global/Carousel';
 import { Title } from '../../components/Global/Title';
 import { PageContentLayout } from '../../components/Layout/PageContentLayout';
 import {
 	usePostsQuery,
 	useLikePostMutation,
+	useViewPostMutation,
 } from '../../graphql/generated/graphql';
 import { formatDate } from '../../utils/formatDate';
 import { urqlClient } from '../../utils/urqlClient';
 
 const Posts = () => {
 	const [, like] = useLikePostMutation();
+	const [, view] = useViewPostMutation();
 	const [cursor, setCursor] = useState<number>(0);
 	const [{ data, error }] = usePostsQuery({
 		variables: {
@@ -95,10 +98,12 @@ const Posts = () => {
 									title,
 									createdAt,
 									users,
+									text,
 									short_text: shortText,
 									images,
 									comments_count: commentsCount,
 									likes_count: likesCount,
+									views,
 								},
 								idx,
 							) => {
@@ -107,7 +112,7 @@ const Posts = () => {
 								return (
 									<Flex
 										p={5}
-										key={id}
+										key={idx}
 										shadow='md'
 										borderWidth='1px'
 										display={'grid'}
@@ -115,7 +120,13 @@ const Posts = () => {
 										borderRadius='2xl'
 										cursor='pointer'
 									>
-										<NextLink href='/post/[id]' as={`/post/${id}`}>
+										<NextLink
+											href='/post/[id]'
+											as={`/post/${id}`}
+											onClick={() =>
+												view({ input: { postId: id, views: views + 1 } })
+											}
+										>
 											<Box flex={1} minW='500px'>
 												<Heading fontSize='xl'>{title}</Heading>
 												<Flex>
@@ -127,8 +138,8 @@ const Posts = () => {
 														{`${shortText}...`}
 														<Link
 															style={{ color: '#3182ce', paddingLeft: '5px' }}
-															href='/post/[id]'
-															as={`/post/${id}`}
+															href='#'
+															onClick={() => console.log('show more')}
 														>
 															Show more
 														</Link>
@@ -203,6 +214,21 @@ const Posts = () => {
 												/>
 												<Text color={'blue.500'} fontSize={14}>
 													{likesCount}
+												</Text>
+											</Flex>
+											<Flex
+												p={3}
+												pl={1}
+												alignItems={'center'}
+												justifyContent={'space-evenly'}
+												borderRadius={8}
+												m={'0 10px'}
+												w={'10%'}
+												cursor='pointer'
+											>
+												<Icon color={'#3182ce'} as={BsBarChartFill} />
+												<Text color={'blue.500'} fontSize={14}>
+													{views}
 												</Text>
 											</Flex>
 										</Box>

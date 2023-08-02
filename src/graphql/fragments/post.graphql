@@ -1,22 +1,24 @@
 fragment PostFragment on Post {
-	id,
-	title,
-	text,
-	createdAt,
-	short_text,
+	id
+	title
+	text
+	createdAt
+	short_text
+	views
 	users {
-		username,
-		email,
+		username
+		avatarName
+		email
 		id
-	},
+	}
 	images {
-		public_id,
+		public_id
 		secure_url
-	},
+	}
 	post_likes {
-		postId,
+		postId
 		userId
-	},
-	comments_count,
+	}
+	comments_count
 	likes_count
 }
