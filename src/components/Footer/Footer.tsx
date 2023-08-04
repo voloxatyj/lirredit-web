@@ -3,7 +3,7 @@ import { NavLink } from './NavLink';
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { BiCopyright } from 'react-icons/bi';
 
-export const Footer = (props: FlexProps) => (
+export const Footer: React.FC<FlexProps> = (props: FlexProps) => (
 	<Flex as='footer' className='footer_container' {...props}>
 		<ul className='social_icons'>
 			<NavLink href='#' icon={FaFacebook} />
