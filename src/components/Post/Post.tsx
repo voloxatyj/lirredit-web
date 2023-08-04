@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { default as Link, default as NextLink } from 'next/link';
-import {
-	useLikePostMutation,
-	useViewPostMutation,
-} from '../../graphql/generated/graphql';
-import { Box, Flex, Heading, Icon, Text } from '@chakra-ui/react';
+import { useViewPostMutation } from '../../graphql/generated/graphql';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { formatDate } from '../../utils/formatDate';
 import { Carousel } from '../Global/Carousel';
-import { FaRegComment, FaRetweet } from 'react-icons/fa';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { BsBarChartFill } from 'react-icons/bs';
+import { ActionIcons } from './ActionIcons';
 
 interface IPost {
 	isLike: boolean;
@@ -41,7 +36,6 @@ export const Post: React.FC<IPost> = ({
 	users,
 }) => {
 	const [showMore, setShowMore] = useState<boolean>(false);
-	const [, like] = useLikePostMutation();
 	const [, view] = useViewPostMutation();
 	const { value } = formatDate(createdAt).next();
 	return (
@@ -73,7 +67,10 @@ export const Post: React.FC<IPost> = ({
 								<Link
 									style={{ color: '#3182ce', paddingLeft: '5px' }}
 									href='#'
-									onClick={() => setShowMore(!showMore)}
+									onClick={(e) => {
+										e.preventDefault();
+										setShowMore(!showMore);
+									}}
 								>
 									Show more
 								</Link>
@@ -86,80 +83,13 @@ export const Post: React.FC<IPost> = ({
 				</Text>
 			</NextLink>
 			{images.length > 0 && <Carousel slides={images} />}
-			<Box className='action_icons'>
-				<Flex
-					p={3}
-					pl={1}
-					alignItems={'center'}
-					justifyContent={'space-evenly'}
-					borderRadius={8}
-					m={'0 10px'}
-					w={'10%'}
-					cursor='pointer'
-				>
-					<Icon
-						color={'#3182ce'}
-						as={FaRegComment}
-						onClick={() => console.log('comment')}
-					/>
-					<Text color={'blue.500'} fontSize={14}>
-						{commentsCount}
-					</Text>
-				</Flex>
-				<Flex
-					p={3}
-					pl={1}
-					alignItems={'center'}
-					justifyContent={'space-evenly'}
-					borderRadius={8}
-					m={'0 10px'}
-					w={'10%'}
-					cursor='pointer'
-				>
-					<Icon
-						color={'#3182ce'}
-						as={FaRetweet}
-						onClick={() => console.log('retweet')}
-					/>
-					<Text color={'blue.500'} fontSize={14}>
-						{0}
-					</Text>
-				</Flex>
-				<Flex
-					p={3}
-					pl={1}
-					alignItems={'center'}
-					justifyContent={'space-evenly'}
-					borderRadius={8}
-					m={'0 10px'}
-					w={'10%'}
-					cursor='pointer'
-				>
-					<Icon
-						color={'#3182ce'}
-						as={isLike ? AiFillHeart : AiOutlineHeart}
-						onClick={() => like({ input: { postId: id, isLike } })}
-					/>
-					<Text color={'blue.500'} fontSize={14}>
-						{likesCount}
-					</Text>
-				</Flex>
-				<Flex
-					p={3}
-					pl={1}
-					alignItems={'center'}
-					justifyContent={'space-evenly'}
-					borderRadius={8}
-					m={'0 10px'}
-					w={'10%'}
-					cursor='pointer'
-				>
-					<Icon color={'#3182ce'} as={BsBarChartFill} />
-					<Text color={'blue.500'} fontSize={14}>
-						{views}
-					</Text>
-				</Flex>
-			</Box>
+			<ActionIcons
+				commentsCount={commentsCount}
+				isLike={isLike}
+				likesCount={likesCount}
+				views={views}
+				id={id}
+			/>
 		</Flex>
 	);
 };

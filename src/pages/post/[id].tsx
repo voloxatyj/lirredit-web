@@ -16,6 +16,8 @@ import { PostContentLayoutVariant } from '../../components/Layout/PostContentLay
 import { parseDatePost } from '../../utils/formatDate';
 import { IoIosArrowDropleft } from 'react-icons/io';
 import Link from 'next/link';
+import { ActionIcons } from '../../components/Post/ActionIcons';
+import { InformationBlock } from '../../components/Post/InformationBlock';
 
 const Post = () => {
 	const { postId } = useGetIntId();
@@ -63,6 +65,7 @@ const Post = () => {
 											<Avatar
 												bg='#ffff'
 												name={post?.users?.avatarName || ''}
+												color='blue.800'
 												showBorder
 												borderColor='blue.500'
 												borderWidth={3}
@@ -97,6 +100,12 @@ const Post = () => {
 									</Flex>
 								</GridItem>
 							</Grid>
+							<InformationBlock
+								commentsCount={post.comments_count}
+								likesCount={post.likes_count}
+								retweetsCount={0}
+							/>
+							<ActionIcons isLike={isLike} />
 						</Box>
 					</>
 				</PostContentLayoutVariant>
