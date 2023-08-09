@@ -16,13 +16,13 @@ import React, { useState } from 'react';
 import { useForgotPasswordMutation } from '../../graphql/generated/graphql';
 import { Title } from '../Global/Title';
 
-interface ForgotPasswordModalProps {
+interface IForgotPasswordModal {
 	text: string;
 	isOpen: boolean;
 	onClose: () => void;
 }
 
-export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
+export const ForgotPasswordModal: React.FC<IForgotPasswordModal> = ({
 	text,
 	isOpen,
 	onClose,

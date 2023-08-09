@@ -1,0 +1,10 @@
+fragment CommentFragment on CommentsObject {
+	text
+	userId
+	users {
+		id
+		username
+		email
+		image
+	}
+}

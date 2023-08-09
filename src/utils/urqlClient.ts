@@ -89,7 +89,7 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 			headers: cookie
 				? {
 						cookie,
-				}
+					}
 				: undefined,
 		},
 		exchanges: [
@@ -104,10 +104,16 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 				},
 				updates: {
 					Mutation: {
-						create: (_result, args, cache, info) => {
+						createPost: (_result, args, cache, info) => {
 							invalidateAllPosts(cache);
 						},
 						like: (_result, args, cache, info) => {
+							invalidateAllPosts(cache);
+						},
+						view: (_result, args, cache, info) => {
+							invalidateAllPosts(cache);
+						},
+						createComment: (_result, args, cache, info) => {
 							invalidateAllPosts(cache);
 						},
 						login: (_result, args, cache, info) => {

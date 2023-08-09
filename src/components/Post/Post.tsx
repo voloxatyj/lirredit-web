@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { default as Link, default as NextLink } from 'next/link';
-import { useViewPostMutation } from '../../graphql/generated/graphql';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { formatDate } from '../../utils/formatDate';
 import { Carousel } from '../Global/Carousel';
@@ -36,7 +35,6 @@ export const Post: React.FC<IPost> = ({
 	users,
 }) => {
 	const [showMore, setShowMore] = useState<boolean>(false);
-	const [, view] = useViewPostMutation();
 	const { value } = formatDate(createdAt).next();
 	return (
 		<Flex
@@ -49,11 +47,7 @@ export const Post: React.FC<IPost> = ({
 			borderRadius='2xl'
 			cursor='pointer'
 		>
-			<NextLink
-				href='/post/[id]'
-				as={`/post/${id}`}
-				onClick={() => view({ input: { postId: id, views: views + 1 } })}
-			>
+			<NextLink href='/post/[id]' as={`/post/${id}`}>
 				<Box flex={1} minW='500px'>
 					<Heading fontSize='xl'>{title}</Heading>
 					<Flex>

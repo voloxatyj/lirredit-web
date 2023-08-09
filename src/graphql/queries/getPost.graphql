@@ -1,5 +1,5 @@
-query Post($id: Float!) {
-	getPost(id: $id) {
+query Post($input: GetPostInput!) {
+	getPost(input: $input) {
 		post {
 			...PostFragment
 		}

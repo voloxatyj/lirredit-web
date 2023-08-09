@@ -1,5 +1,5 @@
 mutation CreatePost($input: PostInput!) {
-	create(input: $input) {
+	createPost(input: $input) {
 		post {
 			...PostFragment
 		}

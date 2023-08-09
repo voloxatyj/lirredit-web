@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '@chakra-ui/react';
 
-type InputItemProps = {
+type IInputItem = {
 	name: string;
 	value?: string;
 	placeholder?: string;
@@ -12,7 +12,7 @@ type InputItemProps = {
 	size?: string;
 };
 
-export const InputItem: React.FC<InputItemProps> = ({
+export const InputItem: React.FC<IInputItem> = ({
 	name,
 	placeholder,
 	value,

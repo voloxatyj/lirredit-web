@@ -13,13 +13,11 @@ export const InformationBlock: React.FC<IInformationBlock> = ({
 }) => (
 	<Flex
 		alignItems={'center'}
-		justifyContent={'space-evenly'}
+		justifyContent={'start'}
 		borderRadius={8}
-		m={'0 10px'}
-		w={'30%'}
 		cursor='pointer'
 	>
-		<Flex gap={1}>
+		<Flex gap={1} pr={2}>
 			<Text color={'blue.500'} fontSize={14}>
 				{commentsCount}
 			</Text>
@@ -27,7 +25,7 @@ export const InformationBlock: React.FC<IInformationBlock> = ({
 				Comments
 			</Text>
 		</Flex>
-		<Flex gap={1}>
+		<Flex gap={1} pr={2}>
 			<Text color={'blue.500'} fontSize={14}>
 				{likesCount}
 			</Text>
@@ -35,7 +33,7 @@ export const InformationBlock: React.FC<IInformationBlock> = ({
 				Likes
 			</Text>
 		</Flex>
-		<Flex gap={1}>
+		<Flex gap={1} pr={2}>
 			<Text color={'blue.500'} fontSize={14}>
 				{retweetsCount}
 			</Text>

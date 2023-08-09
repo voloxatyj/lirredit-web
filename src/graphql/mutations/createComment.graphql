@@ -1,0 +1,11 @@
+mutation CreateComment($input: CommentsInput!) {
+	createComment(input: $input) {
+		success
+		comment {
+			...CommentFragment
+		}
+		errors {
+			...ErrorFragment
+		}
+	}
+}
