@@ -110,9 +110,6 @@ export const urqlClient = (ssrExchange: any, ctx: any) => {
 						like: (_result, args, cache, info) => {
 							invalidateAllPosts(cache);
 						},
-						view: (_result, args, cache, info) => {
-							invalidateAllPosts(cache);
-						},
 						createComment: (_result, args, cache, info) => {
 							invalidateAllPosts(cache);
 						},
