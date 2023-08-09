@@ -140,7 +140,7 @@ const Post = () => {
 									/>
 								</GridItem>
 								<GridItem pl={4}>
-									<ActionIcons isLike={isLike} />
+									<ActionIcons isLike={isLike} viewIcon={false} />
 								</GridItem>
 							</Grid>
 						</Box>

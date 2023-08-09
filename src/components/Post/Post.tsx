@@ -83,6 +83,7 @@ export const Post: React.FC<IPost> = ({
 				likesCount={likesCount}
 				views={views}
 				id={id}
+				viewIcon={true}
 			/>
 		</Flex>
 	);

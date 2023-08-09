@@ -10,6 +10,7 @@ interface IActionIcons {
 	likesCount?: string;
 	id?: number;
 	views?: string;
+	viewIcon: boolean;
 }
 
 export const ActionIcons: React.FC<IActionIcons> = ({
@@ -18,8 +19,10 @@ export const ActionIcons: React.FC<IActionIcons> = ({
 	isLike,
 	views,
 	id,
+	viewIcon,
 }) => {
 	const [, like] = useLikePostMutation();
+	console.log(isLike, id);
 	return (
 		<Box className='action_icons' marginBottom={views ? 0 : 30}>
 			<Flex
@@ -87,21 +90,23 @@ export const ActionIcons: React.FC<IActionIcons> = ({
 					</Text>
 				)}
 			</Flex>
-			<Flex
-				p={3}
-				pl={1}
-				alignItems={'center'}
-				justifyContent={'space-evenly'}
-				borderRadius={8}
-				m={'0 10px'}
-				w={'10%'}
-				cursor='pointer'
-			>
-				<Icon color={'#3182ce'} as={BsBarChartFill} />
-				<Text color={'blue.500'} fontSize={14}>
-					{views}
-				</Text>
-			</Flex>
+			{viewIcon && (
+				<Flex
+					p={3}
+					pl={1}
+					alignItems={'center'}
+					justifyContent={'space-evenly'}
+					borderRadius={8}
+					m={'0 10px'}
+					w={'10%'}
+					cursor='pointer'
+				>
+					<Icon color={'#3182ce'} as={BsBarChartFill} />
+					<Text color={'blue.500'} fontSize={14}>
+						{views}
+					</Text>
+				</Flex>
+			)}
 		</Box>
 	);
 };
