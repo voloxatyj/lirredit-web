@@ -2,14 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import { PageContentLayout } from '../components/Layout/PageContentLayout';
 import logo from '../assets/icon.png';
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 const Index = () => {
 	const router = useRouter();
 	return (
 		<PageContentLayout>
-			<div
+			<Box
 				style={{
 					display: 'flex',
 					justifyContent: 'center',
@@ -20,7 +20,7 @@ const Index = () => {
 			>
 				<Image src={logo} alt='logo' width={50} height={50} />
 				<Heading fontSize={80}>{'LiRedditChat'}</Heading>
-			</div>
+			</Box>
 		</PageContentLayout>
 	);
 };
