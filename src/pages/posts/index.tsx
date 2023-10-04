@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { withUrqlClient } from 'next-urql';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
-import { Flex, Heading, Spinner, Stack } from '@chakra-ui/react';
-import { Title } from '../../components/Global/Title';
+import { Box, Flex, Heading, Stack } from '@chakra-ui/react';
 import { PageContentLayout } from '../../components/Layout/PageContentLayout';
 import { Post } from '../../components/Post/Post';
 import { usePostsQuery } from '../../graphql/generated/graphql';
 import { urqlClient } from '../../utils/urqlClient';
+import { Loader } from '../../components/Global/Loader';
+import { ErrorBoundary } from '../../components/Global/ErrorBoundary';
+import { useRouter } from 'next/router';
 
 const Posts = () => {
+	const router = useRouter();
 	const [cursor, setCursor] = useState<number>(0);
 	const [{ data, error }] = usePostsQuery({
 		variables: {
@@ -19,25 +22,22 @@ const Posts = () => {
 		},
 	});
 
+	if (error) {
+		return <ErrorBoundary error={error} reset={() => router.push('/')} />;
+	}
+
 	if (!data || error) {
 		return (
 			<PageContentLayout>
-				<div
+				<Box
 					style={{
 						display: 'grid',
 						justifyItems: 'center',
 						marginTop: '20rem',
 					}}
 				>
-					<Spinner
-						thickness='4px'
-						speed='0.65s'
-						emptyColor='gray.200'
-						color='blue.500'
-						size='xl'
-					/>
-					<Title text='loading...' />
-				</div>
+					<Loader />
+				</Box>
 			</PageContentLayout>
 		);
 	}
@@ -96,7 +96,7 @@ const Posts = () => {
 									createdAt={createdAt}
 									text={text}
 									shortText={shortText}
-									images={images}
+									images={images || []}
 									commentsCount={commentsCount}
 									likesCount={likesCount}
 									views={views}
