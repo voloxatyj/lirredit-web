@@ -1,0 +1,22 @@
+query GetComments($input: CommentsInput!) {
+  getComments(input: $input) {
+    comments {
+    	text,
+      postId,
+      id,
+      createdAt,
+      commentId,
+      users {
+        username,
+        avatarName,
+        email,
+        id
+      },
+    },
+    success,
+    errors {
+      message,
+      field
+    }
+  }
+}

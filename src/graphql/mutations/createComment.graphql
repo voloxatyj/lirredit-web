@@ -1,4 +1,4 @@
-mutation CreateComment($input: CommentsInput!) {
+mutation CreateComment($input: CommentInput!) {
 	createComment(input: $input) {
 		success
 		comment {

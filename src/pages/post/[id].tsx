@@ -18,6 +18,8 @@ import {
 	useCreateCommentMutation,
 	usePostQuery,
 	useGetUserQuery,
+	useGetCommentsQuery,
+	CommentObject,
 } from '../../graphql/generated/graphql';
 import { useGetIntId } from '../../utils/useGetIntId';
 import { AlertMessage } from '../../components/Global/AlertMessage';
@@ -28,12 +30,17 @@ import Link from 'next/link';
 import { ActionIcons } from '../../components/Post/ActionIcons';
 import { InformationBlock } from '../../components/Post/InformationBlock';
 import { randomRgbColor } from '../../utils/rndRGBColor';
+import { Comment } from '../../components/Post/Comment';
 
 const Post = () => {
 	const { postId } = useGetIntId();
 	const getUser = useGetUserQuery();
 	const user = getUser[0]?.data?.getUser as User;
 	const [, createComment] = useCreateCommentMutation();
+	const [getComments] = useGetCommentsQuery({
+		variables: { input: { postId } },
+	});
+	const comments = getComments.data?.getComments.comments as CommentObject[];
 	const [{ data }] = usePostQuery({ variables: { input: { postId } } });
 	const { post, errors, isLike } = (data?.getPost as PostResponse) || {};
 	const { value: time } = parseDatePost(post?.createdAt).next();
@@ -160,7 +167,7 @@ const Post = () => {
 							)}
 							<Flex
 								backgroundColor={'white'}
-								borderBottomRadius={'15px'}
+								borderBottomRadius={comments ? 0 : '15px'}
 								maxW={'80vw'}
 								p='6'
 								pt={1}
@@ -190,6 +197,32 @@ const Post = () => {
 									Reply
 								</Button>
 							</Flex>
+							<Box backgroundColor={'white'} borderBottomRadius={'15px'}>
+								{comments &&
+									comments?.map(
+										({
+											id,
+											commentId,
+											images,
+											createdAt,
+											text: commentText,
+											users,
+											views,
+										}: CommentObject) => (
+											<Comment
+												key={id}
+												id={id}
+												commentId={commentId || 0}
+												createdAt={createdAt}
+												images={images || []}
+												postId={postId}
+												text={commentText}
+												users={users}
+												views={views}
+											/>
+										),
+									)}
+							</Box>
 						</Grid>
 					</>
 				</PostContentLayoutVariant>

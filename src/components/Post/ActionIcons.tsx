@@ -22,7 +22,6 @@ export const ActionIcons: React.FC<IActionIcons> = ({
 	viewIcon,
 }) => {
 	const [, like] = useLikePostMutation();
-	console.log(isLike, id);
 	return (
 		<Box className='action_icons' marginBottom={views ? 0 : 30}>
 			<Flex

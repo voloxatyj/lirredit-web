@@ -1,4 +1,4 @@
-fragment CommentFragment on CommentsObject {
+fragment CommentFragment on CommentObject {
 	text
 	userId
 	users {
