@@ -9,14 +9,14 @@ import {
 import { Form, Formik } from 'formik';
 import { withUrqlClient } from 'next-urql';
 import { useRouter } from 'next/router';
-import { Title } from '../components/Global/Title';
-import { InputField } from '../components/Global/InputField';
-import { PageContentLayout } from '../components/Layout/PageContentLayout';
-import { useLogInMutation } from '../graphql/generated/graphql';
-import { toErrorMap } from '../utils/toErrorMap';
-import { urqlClient } from '../utils/urqlClient';
-import { ForgotPasswordModal } from '../components/Modals/ForgotPassword';
-import { AlertMessage } from '../components/Global/AlertMessage';
+import { Title } from '../../components/Global/Title';
+import { InputField } from '../../components/Global/InputField';
+import { PageContentLayout } from '../../components/Layout/PageContentLayout';
+import { useLogInMutation } from '../../graphql/generated/graphql';
+import { toErrorMap } from '../../utils/toErrorMap';
+import { urqlClient } from '../../utils/urqlClient';
+import { ForgotPasswordModal } from '../../components/Modals/ForgotPassword';
+import { AlertMessage } from '../../components/Global/AlertMessage';
 import { useState } from 'react';
 
 const VARIANT_COLOR = 'teal';
